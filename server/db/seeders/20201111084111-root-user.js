@@ -1,6 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const bcrypt = require('bcrypt');
 
+const salt = bcrypt.genSaltSync(10);
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     /**
@@ -20,7 +22,8 @@ module.exports = {
           lastName: 'testovich',
           email: 'test@test.test',
           login: 'root',
-          password: bcrypt.hashSync('root', bcrypt.genSaltSync(10)),
+          password: bcrypt.hashSync('root', salt),
+          salt,
           role_id: 1,
           createdAt: new Date(),
           updatedAt: new Date(),

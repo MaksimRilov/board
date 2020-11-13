@@ -14,7 +14,6 @@ export default class PassportLocalStrategy {
             if (!User.verifyPassword(password, user)) {
               return done(null, false);
             }
-            console.log('user', user);
             return done(null, user);
           })
           .catch((err) => done(err));

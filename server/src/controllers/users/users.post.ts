@@ -11,13 +11,16 @@ export const register = (req: Request, res: Response): void => {
   User.usernameIsFree(login, email)
     .then((user) => {
       if (!user) {
+        const salt = User.genSalt(10);
+        const hashPassword = User.createPassword(password, salt);
         User.create({
           login,
           email,
-          password,
+          password: hashPassword,
           firstName,
           lastName,
           role_id,
+          salt,
         })
           .then((createdUser) => {
             if (createdUser) {

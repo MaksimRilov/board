@@ -1,12 +1,14 @@
 import { DataTypes, Model, Op } from 'sequelize';
 import bcrypt from 'bcrypt';
 import sequelize from '../config';
+import Role from './role';
 
 export interface IUserAttributes {
   id?: number;
   login: string;
   email: string;
   password: string;
+  salt: string;
   firstName: string;
   lastName: string;
   role_id: number;
@@ -23,17 +25,21 @@ class User extends Model<IUserAttributes> {
 
   public password!: string;
 
+  public salt!: string;
+
   public firstName!: string;
 
   public lastName!: string;
 
   public role_id!: number;
 
-  public createdAt!: Date;
+  public readonly createdAt!: Date;
 
-  public updatedAt!: Date;
+  public readonly updatedAt!: Date;
 
-  private static readonly salt = bcrypt.genSaltSync(10);
+  static genSalt(saltRounds: number): string {
+    return bcrypt.genSaltSync(saltRounds);
+  }
 
   static usernameIsFree(login: string, email: string): Promise<User | null> {
     return User.findOne({
@@ -49,23 +55,24 @@ class User extends Model<IUserAttributes> {
     });
   }
 
-  static findUser(username: string): Promise<User | null> {
+  static findUser(username: string): Promise<Model | null> {
     return User.findOne({
       where: {
         [Op.or]: [{ login: username }, { email: username }],
       },
+      include: Role,
     });
   }
 
   static verifyPassword(password: string, user: IUserAttributes): boolean {
-    const hashPassword = bcrypt.hashSync(password, this.salt);
-
-    console.log('user.password', user.password);
-    console.log('password', password);
-    console.log('hashPassword', hashPassword);
+    const hashPassword = bcrypt.hashSync(password, user.salt);
 
     if (user.password === hashPassword) return true;
     return false;
+  }
+
+  static createPassword(password: string, salt: string): string {
+    return bcrypt.hashSync(password, salt);
   }
 }
 
@@ -85,6 +92,10 @@ User.init(
       allowNull: false,
     },
     password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    salt: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -114,5 +125,10 @@ User.init(
     modelName: 'User',
   }
 );
+
+Role.hasMany(User);
+User.belongsTo(Role, {
+  foreignKey: 'role_id',
+});
 
 export default User;
