@@ -1,7 +1,7 @@
-import { DataTypes, Model, Op } from 'sequelize';
+import { Association, DataTypes, Model, Op } from 'sequelize';
 import bcrypt from 'bcrypt';
 import sequelize from '../config';
-import Role from './role';
+import Role, { IRoleAttributes } from './role';
 
 export interface IUserAttributes {
   id?: number;
@@ -11,12 +11,13 @@ export interface IUserAttributes {
   salt: string;
   firstName: string;
   lastName: string;
-  role_id: number;
+  roleId: number;
   createdAt?: Date;
   updatedAt?: Date;
+  roles?: IRoleAttributes;
 }
 
-class User extends Model<IUserAttributes> {
+class User extends Model<IUserAttributes> implements IUserAttributes {
   public id!: number;
 
   public login!: string;
@@ -31,11 +32,17 @@ class User extends Model<IUserAttributes> {
 
   public lastName!: string;
 
-  public role_id!: number;
+  public roleId!: number;
 
   public readonly createdAt!: Date;
 
   public readonly updatedAt!: Date;
+
+  public roles!: IRoleAttributes;
+
+  public static associations: {
+    roles: Association<User, Role>;
+  };
 
   static genSalt(saltRounds: number): string {
     return bcrypt.genSaltSync(saltRounds);
@@ -55,12 +62,12 @@ class User extends Model<IUserAttributes> {
     });
   }
 
-  static findUser(username: string): Promise<Model | null> {
+  static findUser(username: string): Promise<User | null> {
     return User.findOne({
       where: {
         [Op.or]: [{ login: username }, { email: username }],
       },
-      include: Role,
+      include: [User.associations.roles],
     });
   }
 
@@ -107,7 +114,7 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    role_id: {
+    roleId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -123,12 +130,14 @@ User.init(
   {
     sequelize,
     modelName: 'User',
+    tableName: 'users',
   }
 );
 
 Role.hasMany(User);
 User.belongsTo(Role, {
-  foreignKey: 'role_id',
+  foreignKey: 'roleId',
+  as: 'roles',
 });
 
 export default User;

@@ -24,7 +24,7 @@ module.exports = {
           login: 'root',
           password: bcrypt.hashSync('root', salt),
           salt,
-          role_id: 1,
+          roleId: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
