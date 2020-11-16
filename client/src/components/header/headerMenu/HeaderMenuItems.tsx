@@ -4,11 +4,14 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 type OwnProps = {
   user: boolean,
+  handleClickOpenAuthForm: () => void,
 };
 
 type Props = OwnProps;
 
-const HeaderMenuItems: FC<Props> = React.forwardRef(({ user }, ref) => {
+const HeaderMenuItems: FC<Props> = React.forwardRef(({
+  user, handleClickOpenAuthForm,
+}, ref) => {
   
   return (
     <>
@@ -16,20 +19,33 @@ const HeaderMenuItems: FC<Props> = React.forwardRef(({ user }, ref) => {
       user
       ? [
         <MenuItem key="logout">
-          <Button>
-            Выйти
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+          >
+            Добавить администратора
           </Button>
         </MenuItem>,
 
         <MenuItem key="reg">
-        <Button>
-          Добавить администратора
-        </Button>
-      </MenuItem>
+          <Button
+            variant="contained"
+            color="secondary"
+            fullWidth
+          >
+            Выйти
+          </Button>
+        </MenuItem>
       ]
       : [
         <MenuItem key="auth">
-          <Button>
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            onClick={handleClickOpenAuthForm}
+          >
             Авторизоваться
           </Button>
         </MenuItem>,

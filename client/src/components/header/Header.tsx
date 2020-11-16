@@ -26,13 +26,14 @@ type OwnProps = {
   openMenu: (event: React.MouseEvent<HTMLElement>) => void,
   closeMenu: () => void,
   anchorMenu: Element | null,
+  handleClickOpenAuthForm: () => void,
 };
 
 type Props = OwnProps;
 
 const Header: FC<Props> = ({
   openMenu, anchorMenu,
-  closeMenu,
+  closeMenu, handleClickOpenAuthForm,
 }) => {
   const classes = useStyles();
 
@@ -52,6 +53,7 @@ const Header: FC<Props> = ({
           <HeaderMenu
             anchorMenu={anchorMenu}
             closeMenu={closeMenu}
+            handleClickOpenAuthForm={handleClickOpenAuthForm}
           />
 
           <Typography variant="h6" className={classes.title}>
