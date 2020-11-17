@@ -28,7 +28,7 @@ type MapDispatchToProps = {
 
 type Props = OwnProps & MapStateToProps & MapDispatchToProps;
 
-export const validationSchema = Yup.object({
+const validationSchema = Yup.object({
   username: 
     Yup.string()
       .required('Поле email или Логин обязательно'),
@@ -57,7 +57,7 @@ const AuthFormContainer: FC<Props> = ({
   return (
     <Dialog
       open={open}
-      onClose={close}
+      onClose={closeDialog}
     >
 
       <DialogTitle>

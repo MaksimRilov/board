@@ -16,11 +16,20 @@ export const UserApi = {
         username: loginData.username,
         password: loginData.password,
       });
-      console.log('res', res);
       return res.data;
     } catch (error) {
       // console.error('error', error);
       return error as AxiosError;
     };
   },
+
+  async registerUser(user: UserAttributes) {
+    try {
+      const res = await instance.post<{isCreated: boolean}>('user', user)
+      return res.data;
+    } catch (error) {
+      console.error('error', error);
+      return error as AxiosError;
+    }
+  }
 };

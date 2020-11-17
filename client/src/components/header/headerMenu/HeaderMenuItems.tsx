@@ -5,12 +5,14 @@ import MenuItem from '@material-ui/core/MenuItem';
 type OwnProps = {
   isAuth: boolean,
   handleClickOpenAuthForm: () => void,
+  handleClickOpenRegisterForm: () => void,
 };
 
 type Props = OwnProps;
 
 const HeaderMenuItems: FC<Props> = React.forwardRef(({
   isAuth, handleClickOpenAuthForm,
+  handleClickOpenRegisterForm,
 }, ref) => {
   
   return (
@@ -23,6 +25,7 @@ const HeaderMenuItems: FC<Props> = React.forwardRef(({
             variant="contained"
             color="primary"
             fullWidth
+            onClick={handleClickOpenRegisterForm}
           >
             Добавить администратора
           </Button>

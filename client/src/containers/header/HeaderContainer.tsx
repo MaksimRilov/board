@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 
 import Header from '../../components/header/Header';
 import AuthFormContainer from '../forms/AuthFormContainer';
+import RegisterFormContainer from '../forms/RegisterFormContainer';
 import { RootState } from '../../store/rootReducer';
 import { getIsAuth } from '../../store/user/selectors';
 
@@ -19,6 +20,8 @@ const HeaderContainer: FC<Props> = ({
   const [anchorMenu, setAnchorMenu] = useState(null as Element | null);
 
   const [openAuthForm, setOpenAuthForm] = useState(false);
+
+  const [openRegisterForm, setOpenRegisterForm] = useState(false);
 
   
   const openMenu = (event: React.MouseEvent<HTMLElement>): void => {
@@ -37,6 +40,14 @@ const HeaderContainer: FC<Props> = ({
     setOpenAuthForm(false);
   }
 
+  const handleClickOpenRegisterForm = (): void => {
+    setOpenRegisterForm(true);
+  }
+
+  const handleClickCloseRegisterForm = (): void => {
+    setOpenRegisterForm(false);
+  }
+
   return (
     <>
       <AuthFormContainer
@@ -44,11 +55,17 @@ const HeaderContainer: FC<Props> = ({
         close={handleClickCLoseAuthForm}
       />
 
+      <RegisterFormContainer 
+        open={openRegisterForm}
+        close={handleClickCloseRegisterForm}
+      />
+
       <Header
         openMenu={openMenu}
         closeMenu={closeMenu}
         anchorMenu={anchorMenu}
         handleClickOpenAuthForm={handleClickOpenAuthForm}
+        handleClickOpenRegisterForm={handleClickOpenRegisterForm}
         isAuth={isAuth}
       />
     </>
