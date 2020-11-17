@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import User from '../../dal/models/user';
-import Role from '../../dal/models/role';
 import secret from '../../passport/secret';
 
 // eslint-disable-next-line import/prefer-default-export
@@ -34,13 +33,26 @@ export const register = (req: Request, res: Response): void => {
                 password,
               });
             }
+            // User.findUser(createdUser.login).then((foundUser) => {
+            //   if (foundUser) {
+            //     res.status(200).send({
+            //       id: foundUser.id,
+            //       login: foundUser.login,
+            //       email: foundUser.email,
+            //       lastName: foundUser.lastName,
+            //       firstName: foundUser.firstName,
+            //       password,
+            //       role: foundUser.roles.name,
+            //     });
+            //   }
+            // });
           })
           .catch((error) => res.status(400).send({ error }));
       } else {
-        res.status(200).send(null);
+        res.status(406).send({ message: 'Логин или email занят' });
       }
     })
-    .catch((error) => res.status(400).send({ error }));
+    .catch((error) => res.status(400).send(error));
 };
 
 export const login = (req: Request, res: Response): void => {

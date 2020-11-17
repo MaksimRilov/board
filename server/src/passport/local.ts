@@ -9,10 +9,14 @@ export default class PassportLocalStrategy {
         User.findUser(username)
           .then((user) => {
             if (!user) {
-              return done(null, false);
+              return done(null, false, {
+                message: 'Логин или пароль не совпадают',
+              });
             }
             if (!User.verifyPassword(password, user)) {
-              return done(null, false);
+              return done(null, false, {
+                message: 'Логин или пароль не совпадают',
+              });
             }
             return done(null, user);
           })

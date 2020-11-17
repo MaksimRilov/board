@@ -8,9 +8,8 @@ const userRouter = express.Router();
 // userRoute.get('', passport.authenticate('jwt', { session: false }), UserController.UserGet.me);
 
 // TODO: доделать регистрацию пользователя
-// userRouter.post('', UserController.UserPost.register);
+userRouter.post('', UserController.UserPost.register);
 
-// TODO: доделать аутентификацию пользователя
 userRouter.post(
   '/login',
   passport.authenticate('local', { session: false }),
