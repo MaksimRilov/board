@@ -27,6 +27,7 @@ type OwnProps = {
   closeMenu: () => void,
   anchorMenu: Element | null,
   handleClickOpenAuthForm: () => void,
+  isAuth: boolean,
 };
 
 type Props = OwnProps;
@@ -34,6 +35,7 @@ type Props = OwnProps;
 const Header: FC<Props> = ({
   openMenu, anchorMenu,
   closeMenu, handleClickOpenAuthForm,
+  isAuth,
 }) => {
   const classes = useStyles();
 
@@ -54,6 +56,7 @@ const Header: FC<Props> = ({
             anchorMenu={anchorMenu}
             closeMenu={closeMenu}
             handleClickOpenAuthForm={handleClickOpenAuthForm}
+            isAuth={isAuth}
           />
 
           <Typography variant="h6" className={classes.title}>

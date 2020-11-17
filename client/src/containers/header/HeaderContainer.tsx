@@ -1,9 +1,20 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
+import { connect } from "react-redux";
 
 import Header from '../../components/header/Header';
 import AuthFormContainer from '../forms/AuthFormContainer';
+import { RootState } from '../../store/rootReducer';
+import { getIsAuth } from '../../store/user/selectors';
 
-const HeaderContainer = () => {
+type MapStateToProps = {
+  isAuth: boolean,
+};
+
+type Props = MapStateToProps;
+
+const HeaderContainer: FC<Props> = ({
+  isAuth,
+}) => {
 
   const [anchorMenu, setAnchorMenu] = useState(null as Element | null);
 
@@ -38,9 +49,16 @@ const HeaderContainer = () => {
         closeMenu={closeMenu}
         anchorMenu={anchorMenu}
         handleClickOpenAuthForm={handleClickOpenAuthForm}
+        isAuth={isAuth}
       />
     </>
   )
 }
 
-export default HeaderContainer;
+const mapStateToProps = (state: RootState): MapStateToProps => ({
+  isAuth: getIsAuth(state),
+});
+
+export default connect<MapStateToProps, {}, {}, RootState>(mapStateToProps, {
+
+})(HeaderContainer);

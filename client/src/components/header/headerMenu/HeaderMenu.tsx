@@ -14,13 +14,14 @@ type OwnProps = {
   anchorMenu: Element | null,
   closeMenu: () => void,
   handleClickOpenAuthForm: () => void,
+  isAuth: boolean,
 };
 
 type Props = OwnProps;
 
 const HeaderMenu: FC<Props> = React.forwardRef(({
   anchorMenu, closeMenu,
-  handleClickOpenAuthForm,
+  handleClickOpenAuthForm, isAuth,
 },
   ref) => {
 
@@ -45,7 +46,7 @@ const HeaderMenu: FC<Props> = React.forwardRef(({
       classes={{paper: classes.paper}}
     >
       <HeaderMenuItems
-        user={false}
+        isAuth={isAuth}
         handleClickOpenAuthForm={handleClickOpenAuthForm}
       />
     </Menu>

@@ -65,7 +65,7 @@ const AuthForm: FC<Props> = ({
       </DialogContent>
 
       <DialogActions>
-        <Button color="primary" disabled={!(dirty && isValid)}>
+        <Button color="primary" type="submit" disabled={!(dirty && isValid)}>
           Авторизоваться
         </Button>
         <Button color="secondary" onClick={close}>

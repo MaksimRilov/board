@@ -3,20 +3,20 @@ import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 
 type OwnProps = {
-  user: boolean,
+  isAuth: boolean,
   handleClickOpenAuthForm: () => void,
 };
 
 type Props = OwnProps;
 
 const HeaderMenuItems: FC<Props> = React.forwardRef(({
-  user, handleClickOpenAuthForm,
+  isAuth, handleClickOpenAuthForm,
 }, ref) => {
   
   return (
     <>
     {
-      user
+      isAuth
       ? [
         <MenuItem key="logout">
           <Button
