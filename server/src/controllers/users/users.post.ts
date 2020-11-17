@@ -24,14 +24,7 @@ export const register = (req: Request, res: Response): void => {
         })
           .then((createdUser) => {
             if (createdUser) {
-              res.status(200).send({
-                id: createdUser.id,
-                login: createdUser.login,
-                email: createdUser.email,
-                lastName: createdUser.lastName,
-                firstName: createdUser.firstName,
-                password,
-              });
+              res.status(200).send({ isCreated: true });
             }
             // User.findUser(createdUser.login).then((foundUser) => {
             //   if (foundUser) {
