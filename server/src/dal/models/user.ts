@@ -1,20 +1,23 @@
-import { DataTypes, Model, Op } from 'sequelize';
+import { Association, DataTypes, Model, Op } from 'sequelize';
 import bcrypt from 'bcrypt';
 import sequelize from '../config';
+import Role, { IRoleAttributes } from './role';
 
 export interface IUserAttributes {
   id?: number;
   login: string;
   email: string;
   password: string;
+  salt: string;
   firstName: string;
   lastName: string;
-  role_id: number;
+  roleId: number;
   createdAt?: Date;
   updatedAt?: Date;
+  roles?: IRoleAttributes;
 }
 
-class User extends Model<IUserAttributes> {
+class User extends Model<IUserAttributes> implements IUserAttributes {
   public id!: number;
 
   public login!: string;
@@ -23,17 +26,27 @@ class User extends Model<IUserAttributes> {
 
   public password!: string;
 
+  public salt!: string;
+
   public firstName!: string;
 
   public lastName!: string;
 
-  public role_id!: number;
+  public roleId!: number;
 
-  public createdAt!: Date;
+  public readonly createdAt!: Date;
 
-  public updatedAt!: Date;
+  public readonly updatedAt!: Date;
 
-  private static readonly salt = bcrypt.genSaltSync(10);
+  public roles!: IRoleAttributes;
+
+  public static associations: {
+    roles: Association<User, Role>;
+  };
+
+  static genSalt(saltRounds: number): string {
+    return bcrypt.genSaltSync(saltRounds);
+  }
 
   static usernameIsFree(login: string, email: string): Promise<User | null> {
     return User.findOne({
@@ -54,18 +67,19 @@ class User extends Model<IUserAttributes> {
       where: {
         [Op.or]: [{ login: username }, { email: username }],
       },
+      include: [User.associations.roles],
     });
   }
 
   static verifyPassword(password: string, user: IUserAttributes): boolean {
-    const hashPassword = bcrypt.hashSync(password, this.salt);
-
-    console.log('user.password', user.password);
-    console.log('password', password);
-    console.log('hashPassword', hashPassword);
+    const hashPassword = bcrypt.hashSync(password, user.salt);
 
     if (user.password === hashPassword) return true;
     return false;
+  }
+
+  static createPassword(password: string, salt: string): string {
+    return bcrypt.hashSync(password, salt);
   }
 }
 
@@ -88,6 +102,10 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    salt: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     firstName: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -96,7 +114,7 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    role_id: {
+    roleId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -112,7 +130,14 @@ User.init(
   {
     sequelize,
     modelName: 'User',
+    tableName: 'users',
   }
 );
+
+Role.hasMany(User);
+User.belongsTo(Role, {
+  foreignKey: 'roleId',
+  as: 'roles',
+});
 
 export default User;

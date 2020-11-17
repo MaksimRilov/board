@@ -1,23 +1,27 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import User from '../../dal/models/user';
+import Role from '../../dal/models/role';
 import secret from '../../passport/secret';
 
 // eslint-disable-next-line import/prefer-default-export
 export const register = (req: Request, res: Response): void => {
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  const { login, email, password, firstName, lastName, role_id = 1 } = req.body;
+  const { login, email, password, firstName, lastName, roleId = 1 } = req.body;
 
   User.usernameIsFree(login, email)
     .then((user) => {
       if (!user) {
+        const salt = User.genSalt(10);
+        const hashPassword = User.createPassword(password, salt);
         User.create({
           login,
           email,
-          password,
+          password: hashPassword,
           firstName,
           lastName,
-          role_id,
+          roleId,
+          salt,
         })
           .then((createdUser) => {
             if (createdUser) {
@@ -45,7 +49,7 @@ export const login = (req: Request, res: Response): void => {
   if (user) {
     const payload = {
       id: user.id,
-      role_id: user.role_id,
+      roleId: user.roleId,
     };
 
     const token = jwt.sign(payload, secret);
@@ -55,7 +59,7 @@ export const login = (req: Request, res: Response): void => {
       login: user.login,
       firstName: user.firstName,
       lastName: user.lastName,
-      role: user.role_id,
+      role: user.roles?.name,
     });
   } else {
     res.status(200).send(null);

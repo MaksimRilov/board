@@ -8,21 +8,31 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       firstName: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       lastName: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       email: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       login: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       password: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
-      role_id: {
+      salt: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      roleId: {
+        allowNull: false,
         type: Sequelize.INTEGER,
       },
       createdAt: {

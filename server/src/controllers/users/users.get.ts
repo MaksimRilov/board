@@ -12,7 +12,7 @@ export const me = (req: Request, res: Response): void => {
       login: user.login,
       firstName: user.firstName,
       lastName: user.lastName,
-      role: user.role_id,
+      role: user.roleId,
     });
   } else {
     res.status(200).send(user);
