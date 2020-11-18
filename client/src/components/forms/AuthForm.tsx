@@ -48,6 +48,7 @@ const AuthForm: FC<Props> = ({
           margin="dense"
           label="Логин или email"
           fullWidth
+          required
         />
 
         <TextField 
@@ -61,11 +62,12 @@ const AuthForm: FC<Props> = ({
           label="Пароль"
           type="password"
           fullWidth
+          required
         />
       </DialogContent>
 
       <DialogActions>
-        <Button color="primary" type="submit" disabled={!(dirty && isValid)}>
+        <Button color="primary" variant="contained" type="submit" disabled={!(dirty && isValid)}>
           Авторизоваться
         </Button>
         <Button color="secondary" onClick={close}>

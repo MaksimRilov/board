@@ -22,12 +22,13 @@ type MapStateToProps = {
     flag: boolean,
     msg: null | string,
   },
-  isCreated: boolean,
+  isCreated: number | null,
 };
 
 type MapDispatchToProps = {
   registerUser: (user: UserAttributes) => void,
   usernameIsNotFree: (isFree: {flag: boolean, msg: null | string}) => void,
+  userWasCreated: (isCreated: number | null) => void,
 };
 
 type Props = OwnProps & MapStateToProps & MapDispatchToProps;
@@ -54,6 +55,7 @@ const RegisterFormContainer:FC<Props> = ({
   open, close,
   registerUser, isFree,
   usernameIsNotFree, isCreated,
+  userWasCreated,
 }) => {
 
   const formikRef = useRef<FormikProps<UserAttributes>>(null);
@@ -62,9 +64,10 @@ const RegisterFormContainer:FC<Props> = ({
     formikRef.current?.resetForm();
   }, [isCreated])
 
-  const closeDialog = () => {
+  const closeDialog = (): void => {
     close();
-    usernameIsNotFree({flag: false, msg: null})
+    usernameIsNotFree({flag: false, msg: null});
+    userWasCreated(null);
   }
 
 
@@ -86,6 +89,7 @@ const RegisterFormContainer:FC<Props> = ({
       </DialogTitle>
 
       <Formik
+        innerRef={formikRef}
         initialValues={{
           login: '',
           email: '',
@@ -129,9 +133,10 @@ const RegisterFormContainer:FC<Props> = ({
 const mapStateToProps = (state: RootState): MapStateToProps => ({
   isFree: getUsernameIsFree(state),
   isCreated: userIsCreated(state),
-})
+});
 
 export default connect<MapStateToProps, MapDispatchToProps, OwnProps, RootState>(mapStateToProps, {
   registerUser,
   usernameIsNotFree: actions.usernameIsNotFree,
+  userWasCreated: actions.userWasCreated,
 })(RegisterFormContainer);

@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import Header from '../../components/header/Header';
 import AuthFormContainer from '../forms/AuthFormContainer';
 import RegisterFormContainer from '../forms/RegisterFormContainer';
+import CreateTaskFormContainer from '../forms/CreateTaskFormContainer';
 import { RootState } from '../../store/rootReducer';
 import { getIsAuth } from '../../store/user/selectors';
 import { actions } from '../../store/user/action';
@@ -27,6 +28,8 @@ const HeaderContainer: FC<Props> = ({
   const [openAuthForm, setOpenAuthForm] = useState(false);
 
   const [openRegisterForm, setOpenRegisterForm] = useState(false);
+
+  const [openCreateTaskDialog, setOpenCreateTaskDialog] = useState(false);
 
   
   const openMenu = (event: React.MouseEvent<HTMLElement>): void => {
@@ -53,6 +56,14 @@ const HeaderContainer: FC<Props> = ({
     setOpenRegisterForm(false);
   }
 
+  const handleClickOpenCreateTaskForm = (): void => {
+    setOpenCreateTaskDialog(true);
+  }
+
+  const handleClickCloseCreateTaskForm = (): void => {
+    setOpenCreateTaskDialog(false);
+  }
+
   const handleClickLogoutUser = (): void => {
     localStorage.removeItem('token');
     logoutUser();
@@ -70,6 +81,11 @@ const HeaderContainer: FC<Props> = ({
         close={handleClickCloseRegisterForm}
       />
 
+      <CreateTaskFormContainer
+        open={openCreateTaskDialog}
+        close={handleClickCloseCreateTaskForm}
+      />
+
       <Header
         openMenu={openMenu}
         closeMenu={closeMenu}
@@ -78,6 +94,7 @@ const HeaderContainer: FC<Props> = ({
         handleClickOpenRegisterForm={handleClickOpenRegisterForm}
         isAuth={isAuth}
         handleClickLogoutUser={handleClickLogoutUser}
+        handleClickOpenCreateTaskForm={handleClickOpenCreateTaskForm}
       />
     </>
   )

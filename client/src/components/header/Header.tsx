@@ -30,6 +30,7 @@ type OwnProps = {
   handleClickOpenRegisterForm: () => void,
   isAuth: boolean,
   handleClickLogoutUser: () => void,
+  handleClickOpenCreateTaskForm: () => void,
 };
 
 type Props = OwnProps;
@@ -38,7 +39,7 @@ const Header: FC<Props> = ({
   openMenu, anchorMenu,
   closeMenu, handleClickOpenAuthForm,
   handleClickOpenRegisterForm, isAuth,
-  handleClickLogoutUser,
+  handleClickLogoutUser, handleClickOpenCreateTaskForm,
 }) => {
   const classes = useStyles();
 
@@ -68,7 +69,13 @@ const Header: FC<Props> = ({
             Доска улучшений Smartech
           </Typography>
 
-          <Button color="secondary" variant="contained">Предложить</Button>
+          <Button
+            color="secondary"
+            variant="contained"
+            onClick={handleClickOpenCreateTaskForm}
+          >
+            Предложить
+          </Button>
         </Toolbar>
       </AppBar>
     </Box>

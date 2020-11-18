@@ -9,7 +9,7 @@ const initialState = {
     flag: false,
     msg: null as null | string,
   },
-  isCreated: false,
+  isCreated: null as number | null,
 }
 
 const userReducer = (state = initialState, action: Actions): InitialState => {

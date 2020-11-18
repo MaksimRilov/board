@@ -57,6 +57,7 @@ const RegisterForm: FC<Props> = ({
           margin="dense"
           label="Логин"
           fullWidth
+          required
         />
 
         <TextField
@@ -70,6 +71,7 @@ const RegisterForm: FC<Props> = ({
           margin="dense"
           label="E-mail"
           fullWidth
+          required
         />
 
         <TextField
@@ -82,6 +84,7 @@ const RegisterForm: FC<Props> = ({
           margin="dense"
           label="Имя"
           fullWidth
+          required
         />
 
         <TextField
@@ -94,6 +97,7 @@ const RegisterForm: FC<Props> = ({
           margin="dense"
           label="Фамилия"
           fullWidth
+          required
         />
 
         <TextField
@@ -107,11 +111,12 @@ const RegisterForm: FC<Props> = ({
           margin="dense"
           label="Пароль"
           fullWidth
+          required
         />
       </DialogContent>
 
       <DialogActions>
-        <Button color="primary" type="submit" disabled={!(dirty && isValid)}>
+        <Button color="primary" variant="contained" type="submit" disabled={!(dirty && isValid)}>
           Добавить администратора
         </Button>
         <Button color="secondary" onClick={close}>

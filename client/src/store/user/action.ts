@@ -6,10 +6,10 @@ import { UserAttributes } from './types';
 
 const isError = (res: any): res is AxiosError => {
   if ((res.isAxiosError !== undefined)) {
-    return true
+    return true;
   }
-  return false
-}
+  return false;
+};
 
 export const actions = {
   setUser: (user: UserAttributes | null) => ({
@@ -28,7 +28,7 @@ export const actions = {
     type: 'USER/USERNAME_NOT_FREE',
     isFree,
   } as const),
-  userWasCreated: (isCreated: boolean) => ({
+  userWasCreated: (isCreated: number | null) => ({
     type: 'USER/USER_WAS_CREATED',
     isCreated,
   } as const),
@@ -69,7 +69,7 @@ export const registerUser = (user: UserAttributes): Thunk => {
       dispatch(actions.userWasCreated(data.isCreated));
     } else {
       if (data.response?.status === 406) {
-        dispatch(actions.userWasCreated(false));
+        dispatch(actions.userWasCreated(null));
         dispatch(actions.usernameIsNotFree({
           flag: true,
           msg: data.response.data.message,

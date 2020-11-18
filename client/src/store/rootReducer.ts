@@ -2,9 +2,11 @@ import { Action, applyMiddleware, combineReducers, compose, createStore } from '
 import thunkMiddleware, { ThunkAction } from 'redux-thunk';
 
 import userReducer from './user/userReducer';
+import taskReducer from './task/taskReducer';
 
 const rootReducer = combineReducers({
   userReducer,
+  taskReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

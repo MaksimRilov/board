@@ -1,6 +1,7 @@
 import axios, { AxiosError } from 'axios';
 
 import { UserAttributes } from '../store/user/types';
+import { TaskAttributes } from '../store/task/types';
 
 const token = localStorage.getItem('token') || '';
 
@@ -28,7 +29,7 @@ export const UserApi = {
 
   async registerUser(user: UserAttributes) {
     try {
-      const res = await instance.post<{isCreated: boolean}>('/user', user)
+      const res = await instance.post<{isCreated: number}>('/user', user)
       return res.data;
     } catch (error) {
       console.error('error', error);
@@ -39,6 +40,18 @@ export const UserApi = {
   async authUser() {
     try {
       const res = await instance.get<UserAttributes>('/user');
+      return res.data;
+    } catch (error) {
+      console.log('error', error);
+      return error as AxiosError;
+    };
+  },
+};
+
+export const TaskApi = {
+  async createTask(task: TaskAttributes) {
+    try {
+      const res = await instance.post<{isCreated: number}>('/task', task);
       return res.data;
     } catch (error) {
       console.log('error', error);
