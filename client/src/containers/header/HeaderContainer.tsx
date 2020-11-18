@@ -6,15 +6,20 @@ import AuthFormContainer from '../forms/AuthFormContainer';
 import RegisterFormContainer from '../forms/RegisterFormContainer';
 import { RootState } from '../../store/rootReducer';
 import { getIsAuth } from '../../store/user/selectors';
+import { actions } from '../../store/user/action';
 
 type MapStateToProps = {
   isAuth: boolean,
 };
 
-type Props = MapStateToProps;
+type MapDispatchToProps = {
+  logoutUser: () => void,
+}
+
+type Props = MapStateToProps & MapDispatchToProps;
 
 const HeaderContainer: FC<Props> = ({
-  isAuth,
+  isAuth, logoutUser,
 }) => {
 
   const [anchorMenu, setAnchorMenu] = useState(null as Element | null);
@@ -48,6 +53,11 @@ const HeaderContainer: FC<Props> = ({
     setOpenRegisterForm(false);
   }
 
+  const handleClickLogoutUser = (): void => {
+    localStorage.removeItem('token');
+    logoutUser();
+  }
+
   return (
     <>
       <AuthFormContainer
@@ -67,6 +77,7 @@ const HeaderContainer: FC<Props> = ({
         handleClickOpenAuthForm={handleClickOpenAuthForm}
         handleClickOpenRegisterForm={handleClickOpenRegisterForm}
         isAuth={isAuth}
+        handleClickLogoutUser={handleClickLogoutUser}
       />
     </>
   )
@@ -76,6 +87,6 @@ const mapStateToProps = (state: RootState): MapStateToProps => ({
   isAuth: getIsAuth(state),
 });
 
-export default connect<MapStateToProps, {}, {}, RootState>(mapStateToProps, {
-
+export default connect<MapStateToProps, MapDispatchToProps, {}, RootState>(mapStateToProps, {
+  logoutUser: actions.logoutUser,
 })(HeaderContainer);

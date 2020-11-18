@@ -25,8 +25,13 @@ const userReducer = (state = initialState, action: Actions): InitialState => {
       return {
         ...state,
         user: action.user,
-        isAuth: true,
         badLoginData: false,
+      };
+    }
+    case 'USER/SET_IS_AUTH': {
+      return {
+        ...state,
+        isAuth: action.isAuth,
       };
     }
     case 'USER/USERNAME_NOT_FREE': {
@@ -40,6 +45,13 @@ const userReducer = (state = initialState, action: Actions): InitialState => {
         ...state,
         isCreated: action.isCreated,
       };
+    }
+    case 'USER/LOGOUT_USER': {
+      return {
+        ...state,
+        isAuth: false,
+        user: null,
+      }
     }
     default:
       return state;

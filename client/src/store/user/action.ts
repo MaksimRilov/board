@@ -12,9 +12,13 @@ const isError = (res: any): res is AxiosError => {
 }
 
 export const actions = {
-  setUser: (user: UserAttributes) => ({
+  setUser: (user: UserAttributes | null) => ({
     type: 'USER/SET_USER',
     user,
+  } as const),
+  setIsAuth: (isAuth: boolean) => ({
+    type: 'USER/SET_IS_AUTH',
+    isAuth,
   } as const),
   badLoginData: (isBad: boolean) => ({
     type: 'USER/BAD_LOGIN_DATA',
@@ -28,6 +32,9 @@ export const actions = {
     type: 'USER/USER_WAS_CREATED',
     isCreated,
   } as const),
+  logoutUser: () => ({
+    type: 'USER/LOGOUT_USER'
+  } as const),
 }
 
 export const loginUser = (loginData: { username: string, password: string }): Thunk => {
@@ -36,6 +43,7 @@ export const loginUser = (loginData: { username: string, password: string }): Th
     
     if (!isError(data)) {
       if (data) {
+        dispatch(actions.setIsAuth(true));
         dispatch(actions.setUser(data));
       }
     } else {
@@ -45,7 +53,7 @@ export const loginUser = (loginData: { username: string, password: string }): Th
         console.log('error', data)
         // TODO dispatch ошибки
       }
-    }
+    };
   };
 };
 
@@ -59,7 +67,6 @@ export const registerUser = (user: UserAttributes): Thunk => {
         msg: null
       }));
       dispatch(actions.userWasCreated(data.isCreated));
-      console.log('USER', data)
     } else {
       if (data.response?.status === 406) {
         dispatch(actions.userWasCreated(false));
@@ -71,9 +78,28 @@ export const registerUser = (user: UserAttributes): Thunk => {
         console.log('error', data)
         // TODO dispatch ошибки
       }
-    }
-  }
-}
+    };
+  };
+};
+
+export const authUser = (): Thunk => {
+  return async (dispatch) => {
+    const data = await UserApi.authUser();
+
+    if (!isError(data)) {
+      dispatch(actions.setUser(data));
+      dispatch(actions.setIsAuth(true));
+    } else {
+      if (data.response?.status === 401) {
+        dispatch(actions.setIsAuth(false));
+        dispatch(actions.setUser(null));
+      } else {
+        console.log('error', data)
+        // TODO dispatch ошибки
+      }
+    };
+  };
+};
 
 export type Actions = InferActions<typeof actions>;
 type Thunk = BaseThunk<Actions>

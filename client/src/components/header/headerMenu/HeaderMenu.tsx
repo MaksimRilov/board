@@ -16,6 +16,7 @@ type OwnProps = {
   handleClickOpenAuthForm: () => void,
   handleClickOpenRegisterForm: () => void,
   isAuth: boolean,
+  handleClickLogoutUser: () => void,
 };
 
 type Props = OwnProps;
@@ -23,7 +24,7 @@ type Props = OwnProps;
 const HeaderMenu: FC<Props> = React.forwardRef(({
   anchorMenu, closeMenu,
   handleClickOpenAuthForm, handleClickOpenRegisterForm,
-  isAuth,
+  isAuth, handleClickLogoutUser,
 },
   ref) => {
 
@@ -51,6 +52,7 @@ const HeaderMenu: FC<Props> = React.forwardRef(({
         isAuth={isAuth}
         handleClickOpenAuthForm={handleClickOpenAuthForm}
         handleClickOpenRegisterForm={handleClickOpenRegisterForm}
+        handleClickLogoutUser={handleClickLogoutUser}
       />
     </Menu>
   )

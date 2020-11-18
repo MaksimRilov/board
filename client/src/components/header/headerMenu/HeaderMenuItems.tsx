@@ -6,13 +6,14 @@ type OwnProps = {
   isAuth: boolean,
   handleClickOpenAuthForm: () => void,
   handleClickOpenRegisterForm: () => void,
+  handleClickLogoutUser: () => void,
 };
 
 type Props = OwnProps;
 
 const HeaderMenuItems: FC<Props> = React.forwardRef(({
   isAuth, handleClickOpenAuthForm,
-  handleClickOpenRegisterForm,
+  handleClickOpenRegisterForm, handleClickLogoutUser,
 }, ref) => {
   
   return (
@@ -36,6 +37,7 @@ const HeaderMenuItems: FC<Props> = React.forwardRef(({
             variant="contained"
             color="secondary"
             fullWidth
+            onClick={handleClickLogoutUser}
           >
             Выйти
           </Button>
