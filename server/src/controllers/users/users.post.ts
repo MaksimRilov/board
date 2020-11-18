@@ -23,7 +23,7 @@ export const register = (req: Request, res: Response): void => {
         })
           .then((createdUser) => {
             if (createdUser) {
-              res.status(200).send({ isCreated: true });
+              res.status(200).send({ isCreated: createdUser.id });
             }
           })
           .catch((error) => res.status(400).send({ error }));
