@@ -12,9 +12,9 @@ export const me = (req: Request, res: Response): void => {
       login: user.login,
       firstName: user.firstName,
       lastName: user.lastName,
-      role: user.roleId,
+      role: user.roles?.name,
     });
   } else {
-    res.status(200).send(user);
+    res.status(400).send({ message: 'Произошла ошибка' });
   }
 };

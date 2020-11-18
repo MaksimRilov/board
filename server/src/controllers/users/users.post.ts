@@ -26,19 +26,6 @@ export const register = (req: Request, res: Response): void => {
             if (createdUser) {
               res.status(200).send({ isCreated: true });
             }
-            // User.findUser(createdUser.login).then((foundUser) => {
-            //   if (foundUser) {
-            //     res.status(200).send({
-            //       id: foundUser.id,
-            //       login: foundUser.login,
-            //       email: foundUser.email,
-            //       lastName: foundUser.lastName,
-            //       firstName: foundUser.firstName,
-            //       password,
-            //       role: foundUser.roles.name,
-            //     });
-            //   }
-            // });
           })
           .catch((error) => res.status(400).send({ error }));
       } else {

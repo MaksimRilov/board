@@ -5,10 +5,14 @@ import { UserController } from '../controllers';
 const userRouter = express.Router();
 
 // TODO: доделать авторизацию пользователя JWT Token
-// userRoute.get('', passport.authenticate('jwt', { session: false }), UserController.UserGet.me);
+userRouter.get('', passport.authenticate('jwt', { session: false }), UserController.UserGet.me);
 
 // TODO: доделать регистрацию пользователя
-userRouter.post('', UserController.UserPost.register);
+userRouter.post(
+  '',
+  passport.authenticate('jwt', { session: false }),
+  UserController.UserPost.register
+);
 
 userRouter.post(
   '/login',
