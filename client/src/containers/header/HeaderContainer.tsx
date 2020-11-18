@@ -3,22 +3,30 @@ import { connect } from "react-redux";
 
 import Header from '../../components/header/Header';
 import AuthFormContainer from '../forms/AuthFormContainer';
+import RegisterFormContainer from '../forms/RegisterFormContainer';
 import { RootState } from '../../store/rootReducer';
 import { getIsAuth } from '../../store/user/selectors';
+import { actions } from '../../store/user/action';
 
 type MapStateToProps = {
   isAuth: boolean,
 };
 
-type Props = MapStateToProps;
+type MapDispatchToProps = {
+  logoutUser: () => void,
+}
+
+type Props = MapStateToProps & MapDispatchToProps;
 
 const HeaderContainer: FC<Props> = ({
-  isAuth,
+  isAuth, logoutUser,
 }) => {
 
   const [anchorMenu, setAnchorMenu] = useState(null as Element | null);
 
   const [openAuthForm, setOpenAuthForm] = useState(false);
+
+  const [openRegisterForm, setOpenRegisterForm] = useState(false);
 
   
   const openMenu = (event: React.MouseEvent<HTMLElement>): void => {
@@ -37,6 +45,19 @@ const HeaderContainer: FC<Props> = ({
     setOpenAuthForm(false);
   }
 
+  const handleClickOpenRegisterForm = (): void => {
+    setOpenRegisterForm(true);
+  }
+
+  const handleClickCloseRegisterForm = (): void => {
+    setOpenRegisterForm(false);
+  }
+
+  const handleClickLogoutUser = (): void => {
+    localStorage.removeItem('token');
+    logoutUser();
+  }
+
   return (
     <>
       <AuthFormContainer
@@ -44,12 +65,19 @@ const HeaderContainer: FC<Props> = ({
         close={handleClickCLoseAuthForm}
       />
 
+      <RegisterFormContainer 
+        open={openRegisterForm}
+        close={handleClickCloseRegisterForm}
+      />
+
       <Header
         openMenu={openMenu}
         closeMenu={closeMenu}
         anchorMenu={anchorMenu}
         handleClickOpenAuthForm={handleClickOpenAuthForm}
+        handleClickOpenRegisterForm={handleClickOpenRegisterForm}
         isAuth={isAuth}
+        handleClickLogoutUser={handleClickLogoutUser}
       />
     </>
   )
@@ -59,6 +87,6 @@ const mapStateToProps = (state: RootState): MapStateToProps => ({
   isAuth: getIsAuth(state),
 });
 
-export default connect<MapStateToProps, {}, {}, RootState>(mapStateToProps, {
-
+export default connect<MapStateToProps, MapDispatchToProps, {}, RootState>(mapStateToProps, {
+  logoutUser: actions.logoutUser,
 })(HeaderContainer);

@@ -1,3 +1,5 @@
+import { string } from "yup"
+
 export type UserAttributes = {
   id?: number,
   login: string,
@@ -5,5 +7,5 @@ export type UserAttributes = {
   firstName: string,
   lastName: string,
   password?: string,
-  role: string,
+  role?: string,
 }
