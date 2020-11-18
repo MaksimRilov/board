@@ -6,6 +6,7 @@ import passport from 'passport';
 import sequelizeConnect from './dal/config';
 import routes from './routes';
 import PassportLocalStrategy from './passport/local';
+import PassportJWTStrategy from './passport/jwt';
 
 const PORT = 3000; // TODO: вынести в ENV
 
@@ -31,8 +32,10 @@ class Server {
     this.app.use(json());
 
     this.app.use(passport.initialize());
+    PassportJWTStrategy.init();
     PassportLocalStrategy.init();
 
+    // TODO: натсроить логирование
     routes(this.app);
 
     this.app.listen(PORT, () =>

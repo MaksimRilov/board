@@ -5,7 +5,6 @@ import secret from '../../passport/secret';
 
 // eslint-disable-next-line import/prefer-default-export
 export const register = (req: Request, res: Response): void => {
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   const { login, email, password, firstName, lastName, roleId = 1 } = req.body;
 
   User.usernameIsFree(login, email)
@@ -24,21 +23,8 @@ export const register = (req: Request, res: Response): void => {
         })
           .then((createdUser) => {
             if (createdUser) {
-              res.status(200).send({ isCreated: true });
+              res.status(200).send({ isCreated: createdUser.id });
             }
-            // User.findUser(createdUser.login).then((foundUser) => {
-            //   if (foundUser) {
-            //     res.status(200).send({
-            //       id: foundUser.id,
-            //       login: foundUser.login,
-            //       email: foundUser.email,
-            //       lastName: foundUser.lastName,
-            //       firstName: foundUser.firstName,
-            //       password,
-            //       role: foundUser.roles.name,
-            //     });
-            //   }
-            // });
           })
           .catch((error) => res.status(400).send({ error }));
       } else {

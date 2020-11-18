@@ -56,12 +56,6 @@ class User extends Model<IUserAttributes> implements IUserAttributes {
     });
   }
 
-  static createUser(user: IUserAttributes): Promise<User | null> {
-    return User.create({
-      ...user,
-    });
-  }
-
   static findUser(username: string): Promise<User | null> {
     return User.findOne({
       where: {

@@ -1,4 +1,5 @@
 import UserController from './users';
+import TaskController from './tasks';
 
-// eslint-disable-next-line import/prefer-default-export
 export { UserController };
+export { TaskController };
