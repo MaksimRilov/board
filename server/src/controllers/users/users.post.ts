@@ -5,7 +5,6 @@ import secret from '../../passport/secret';
 
 // eslint-disable-next-line import/prefer-default-export
 export const register = (req: Request, res: Response): void => {
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   const { login, email, password, firstName, lastName, roleId = 1 } = req.body;
 
   User.usernameIsFree(login, email)
