@@ -17,6 +17,10 @@ export const actions = {
     type: 'TASK/TASK_WAS_CREATED',
     isCreated,
   } as const),
+  setAllPendingTask: (tasks: Array<TaskAttributes>) => ({
+    type: 'TASK/SET_ALL_PENDING_TASK',
+    tasks,
+  } as const),
 };
 
 export const createTask = (task: TaskAttributes): Thunk => {
@@ -31,6 +35,19 @@ export const createTask = (task: TaskAttributes): Thunk => {
       // TODO dispatch ошибки
     }
   };
+};
+
+export const fetchAllPendingTask = (): Thunk => {
+  return async (dispatch) => {
+    const data = await TaskApi.fetchAllPendingTask();
+
+    if (!isError(data)) {
+      dispatch(actions.setAllPendingTask(data));
+    } else {
+      console.log('error', data)
+      // TODO dispatch ошибки
+    }
+  }
 };
 
 export type Actions = InferActions<typeof actions>;

@@ -22,7 +22,7 @@ export const UserApi = {
       localStorage.setItem('token', res.headers.authorization)
       return res.data;
     } catch (error) {
-      console.error('error', error);
+      console.error(error);
       return error as AxiosError;
     };
   },
@@ -32,7 +32,7 @@ export const UserApi = {
       const res = await instance.post<{isCreated: number}>('/user', user)
       return res.data;
     } catch (error) {
-      console.error('error', error);
+      console.error(error);
       return error as AxiosError;
     };
   },
@@ -42,7 +42,7 @@ export const UserApi = {
       const res = await instance.get<UserAttributes>('/user');
       return res.data;
     } catch (error) {
-      console.log('error', error);
+      console.error(error);
       return error as AxiosError;
     };
   },
@@ -54,7 +54,17 @@ export const TaskApi = {
       const res = await instance.post<{isCreated: number}>('/task', task);
       return res.data;
     } catch (error) {
-      console.log('error', error);
+      console.error(error);
+      return error as AxiosError;
+    };
+  },
+
+  async fetchAllPendingTask() {
+    try {
+      const res = await instance.get<Array<TaskAttributes>>('/task/pending-task');
+      return res.data;
+    } catch (error) {
+      console.error(error);
       return error as AxiosError;
     };
   },

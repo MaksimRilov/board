@@ -3,8 +3,8 @@ import { TaskAttributes } from './types';
 
 const initialValues = {
   isCreated: null as number | null,
-  pendingTask: null as Array<TaskAttributes> | null,
-  approvedTask: null as Array<TaskAttributes> | null,
+  pendingTasks: null as Array<TaskAttributes> | null,
+  approvedTasks: null as Array<TaskAttributes> | null,
 };
 
 const taskReducer = (state = initialValues, action: Actions): InitialValues => {
@@ -13,6 +13,12 @@ const taskReducer = (state = initialValues, action: Actions): InitialValues => {
       return {
         ...state,
         isCreated: action.isCreated,
+      };
+    }
+    case 'TASK/SET_ALL_PENDING_TASK': {
+      return {
+        ...state,
+        pendingTasks: action.tasks,
       };
     }
     default:

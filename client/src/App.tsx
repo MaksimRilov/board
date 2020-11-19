@@ -8,12 +8,12 @@ import Container from '@material-ui/core/Container';
 
 import { withSyspense } from './hoc/withSyspense';
 import HeaderContainer from './containers/header/HeaderContainer';
-import NewTaskContainer from './containers/newTask/NewTaskContainer';
+import PendingTasksContainer from './containers/pendingTasks/PendingTasksContainer';
 import { RootState } from './store/rootReducer';
 import { authUser } from './store/user/action';
 import { getIsAuth, getIsInitialized } from './store/user/selectors';
 
-const SyspenseNewTask = withSyspense(NewTaskContainer);
+const SyspensePendingTasks = withSyspense(PendingTasksContainer);
 
 type MapStateToProps = {
   isAuth: boolean,
@@ -43,7 +43,7 @@ const  App: FC<Props> = ({
         ? <Container maxWidth={false}>
             <Switch>
               <Route exact path="/" render={() => <div>MAIN</div>} />
-              <Route path="/new-tasks" render={() => <SyspenseNewTask />} />
+              <Route path="/pending-tasks" render={() => <SyspensePendingTasks />} />
             </Switch>
           </Container>
           // TODO добавить нормальный preloader

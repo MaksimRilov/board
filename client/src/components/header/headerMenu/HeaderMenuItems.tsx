@@ -52,7 +52,7 @@ const HeaderMenuItems: FC<Props> = React.forwardRef(({
             fullWidth
             onClick={closeMenu}
             component={RouterLink}
-            to="/new-tasks"
+            to="/pending-tasks"
           >
             Модерация предложений
           </Button>

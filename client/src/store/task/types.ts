@@ -5,4 +5,8 @@ export type TaskAttributes = {
   email?: string,
   author?: string,
   completionDate: Date,
+  statuses?: {
+    id: number,
+    name: string,
+  }
 }
