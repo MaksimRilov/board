@@ -3,6 +3,7 @@ import Menu from '@material-ui/core/Menu';
 import { makeStyles } from '@material-ui/core';
 
 import HeaderMenuItems from './HeaderMenuItems';
+import { UserAttributes } from '../../../store/user/types';
 
 const useStyles = makeStyles(() => ({
   paper: {
@@ -17,6 +18,7 @@ type OwnProps = {
   handleClickOpenRegisterForm: () => void,
   isAuth: boolean,
   handleClickLogoutUser: () => void,
+  user: UserAttributes | null,
 };
 
 type Props = OwnProps;
@@ -25,6 +27,7 @@ const HeaderMenu: FC<Props> = React.forwardRef(({
   anchorMenu, closeMenu,
   handleClickOpenAuthForm, handleClickOpenRegisterForm,
   isAuth, handleClickLogoutUser,
+  user,
 },
   ref) => {
 
@@ -53,6 +56,8 @@ const HeaderMenu: FC<Props> = React.forwardRef(({
         handleClickOpenAuthForm={handleClickOpenAuthForm}
         handleClickOpenRegisterForm={handleClickOpenRegisterForm}
         handleClickLogoutUser={handleClickLogoutUser}
+        user={user}
+        closeMenu={closeMenu}
       />
     </Menu>
   )

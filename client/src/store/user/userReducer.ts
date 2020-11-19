@@ -10,6 +10,7 @@ const initialState = {
     msg: null as null | string,
   },
   isCreated: null as number | null,
+  isInitialized: false,
 }
 
 const userReducer = (state = initialState, action: Actions): InitialState => {
@@ -32,6 +33,7 @@ const userReducer = (state = initialState, action: Actions): InitialState => {
       return {
         ...state,
         isAuth: action.isAuth,
+        isInitialized: true,
       };
     }
     case 'USER/USERNAME_NOT_FREE': {

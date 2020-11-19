@@ -6,11 +6,13 @@ import AuthFormContainer from '../forms/AuthFormContainer';
 import RegisterFormContainer from '../forms/RegisterFormContainer';
 import CreateTaskFormContainer from '../forms/CreateTaskFormContainer';
 import { RootState } from '../../store/rootReducer';
-import { getIsAuth } from '../../store/user/selectors';
+import { getIsAuth, getUser } from '../../store/user/selectors';
 import { actions } from '../../store/user/action';
+import { UserAttributes } from '../../store/user/types';
 
 type MapStateToProps = {
   isAuth: boolean,
+  user: UserAttributes | null,
 };
 
 type MapDispatchToProps = {
@@ -21,6 +23,7 @@ type Props = MapStateToProps & MapDispatchToProps;
 
 const HeaderContainer: FC<Props> = ({
   isAuth, logoutUser,
+  user,
 }) => {
 
   const [anchorMenu, setAnchorMenu] = useState(null as Element | null);
@@ -42,6 +45,7 @@ const HeaderContainer: FC<Props> = ({
   
   const handleClickOpenAuthForm = (): void => {
     setOpenAuthForm(true);
+    closeMenu();
   }
 
   const handleClickCLoseAuthForm = (): void => {
@@ -50,6 +54,7 @@ const HeaderContainer: FC<Props> = ({
 
   const handleClickOpenRegisterForm = (): void => {
     setOpenRegisterForm(true);
+    closeMenu();
   }
 
   const handleClickCloseRegisterForm = (): void => {
@@ -67,6 +72,7 @@ const HeaderContainer: FC<Props> = ({
   const handleClickLogoutUser = (): void => {
     localStorage.removeItem('token');
     logoutUser();
+    closeMenu();
   }
 
   return (
@@ -95,6 +101,7 @@ const HeaderContainer: FC<Props> = ({
         isAuth={isAuth}
         handleClickLogoutUser={handleClickLogoutUser}
         handleClickOpenCreateTaskForm={handleClickOpenCreateTaskForm}
+        user={user}
       />
     </>
   )
@@ -102,6 +109,7 @@ const HeaderContainer: FC<Props> = ({
 
 const mapStateToProps = (state: RootState): MapStateToProps => ({
   isAuth: getIsAuth(state),
+  user: getUser(state),
 });
 
 export default connect<MapStateToProps, MapDispatchToProps, {}, RootState>(mapStateToProps, {

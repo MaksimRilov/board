@@ -1,4 +1,6 @@
 import React, { FC } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import AppBar from '@material-ui/core/AppBar';
@@ -9,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 import HeaderMenu from './headerMenu/HeaderMenu';
+import { UserAttributes } from '../../store/user/types';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,6 +23,12 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  title__link: {
+    color: "#FFF",
+    '&:hover': {
+      textDecoration: 'none',
+    }
+  }
 }));
 
 type OwnProps = {
@@ -31,6 +40,7 @@ type OwnProps = {
   isAuth: boolean,
   handleClickLogoutUser: () => void,
   handleClickOpenCreateTaskForm: () => void,
+  user: UserAttributes | null,
 };
 
 type Props = OwnProps;
@@ -40,6 +50,7 @@ const Header: FC<Props> = ({
   closeMenu, handleClickOpenAuthForm,
   handleClickOpenRegisterForm, isAuth,
   handleClickLogoutUser, handleClickOpenCreateTaskForm,
+  user,
 }) => {
   const classes = useStyles();
 
@@ -63,10 +74,13 @@ const Header: FC<Props> = ({
             handleClickOpenRegisterForm={handleClickOpenRegisterForm}
             isAuth={isAuth}
             handleClickLogoutUser={handleClickLogoutUser}
+            user={user}
           />
 
           <Typography variant="h6" className={classes.title}>
-            Доска улучшений Smartech
+            <Link component={RouterLink} to="/" className={classes.title__link}>
+                Доска улучшений Smartech
+            </Link>
           </Typography>
 
           <Button

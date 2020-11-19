@@ -1,7 +1,10 @@
 import { Actions } from './action';
+import { TaskAttributes } from './types';
 
 const initialValues = {
   isCreated: null as number | null,
+  pendingTask: null as Array<TaskAttributes> | null,
+  approvedTask: null as Array<TaskAttributes> | null,
 };
 
 const taskReducer = (state = initialValues, action: Actions): InitialValues => {
