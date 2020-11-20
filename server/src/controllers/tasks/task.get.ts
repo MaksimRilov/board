@@ -9,7 +9,7 @@ export const getAllPendingTask = (req: Request, res: Response): void => {
       statusId: 1,
     },
     include: [{ association: Task.associations.statuses, attributes: ['id', 'name'] }],
-    attributes: { exclude: ['statusId', 'StatusId'] },
+    attributes: { exclude: ['StatusId'] },
   })
     .then((tasks) => {
       res.status(200).send(tasks);

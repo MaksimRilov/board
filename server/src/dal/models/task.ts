@@ -1,5 +1,6 @@
-import { Model, DataTypes, Association } from 'sequelize';
+import { Model, DataTypes, Association, HasManyAddAssociationMixin } from 'sequelize';
 import Status, { IStatusAttributes } from './status';
+import User, { IUserAttributes } from './user';
 
 import sequelize from '../config';
 
@@ -14,6 +15,7 @@ export interface ITaskAttributes {
   createdAt?: Date;
   updatedAt?: Date;
   statuses?: IStatusAttributes;
+  users?: IUserAttributes;
 }
 
 class Task extends Model<ITaskAttributes> implements ITaskAttributes {
@@ -37,8 +39,13 @@ class Task extends Model<ITaskAttributes> implements ITaskAttributes {
 
   public statuses!: IStatusAttributes;
 
+  public users!: IUserAttributes;
+
+  public addUser!: HasManyAddAssociationMixin<User, number>;
+
   public static associations: {
     statuses: Association<Task, Status>;
+    users: Association<Task, User>;
   };
 }
 
@@ -92,5 +99,8 @@ Task.belongsTo(Status, {
   foreignKey: 'statusId',
   as: 'statuses',
 });
+
+Task.belongsToMany(User, { through: 'userstasks', as: 'users' });
+User.belongsToMany(Task, { through: 'userstasks', as: 'users' });
 
 export default Task;
