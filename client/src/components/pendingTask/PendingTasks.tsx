@@ -17,16 +17,16 @@ const PendingTasks: FC<Props> = ({
 }) => {
 
   return (
-    <Grid container justify="space-around">
-      { pendingTasks && pendingTasks?.length
-          ? pendingTasks?.map((task) => <PendingTaskItem key={task.id} />)
-          : <Box clone pt={2}>
-              <Grid item>
+    <Box clone pt={3}>
+      <Grid container justify="space-between" spacing={3}>
+        { pendingTasks && pendingTasks?.length
+            ? pendingTasks?.map((task) => <PendingTaskItem task={task} key={task.id} />)
+            : <Grid item>
                 <Typography>Новых задач нет</Typography>
               </Grid>
-            </Box>
-      }
-    </Grid>
+        }
+      </Grid>
+    </Box>
   )
 }
 
