@@ -1,4 +1,4 @@
-import { DataTypes, Model, Op } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config';
 
 export interface IRoleAttributes {
