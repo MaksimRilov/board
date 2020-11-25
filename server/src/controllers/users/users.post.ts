@@ -44,14 +44,20 @@ export const login = (req: Request, res: Response): void => {
     };
 
     const token = jwt.sign(payload, secret);
-    res.status(200).header('Authorization', `Bearer ${token}`).send({
-      id: user.id,
-      email: user.email,
-      login: user.login,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      role: user.roles?.name,
-    });
+    res
+      .status(200)
+      .header('Authorization', `Bearer ${token}`)
+      .send({
+        id: user.id,
+        email: user.email,
+        login: user.login,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        roles: {
+          id: user.roles?.id,
+          name: user.roles?.name,
+        },
+      });
   } else {
     res.status(200).send(null);
   }
