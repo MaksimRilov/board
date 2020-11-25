@@ -16,7 +16,10 @@ export default class PassportJWTStrategy {
             where: {
               id: payload.id,
             },
-            include: [User.associations.roles],
+            attributes: {
+              exclude: ['password', 'salt', 'roleId', 'createdAt', 'updatedAt', 'RoleId'],
+            },
+            include: [{ association: User.associations.roles, attributes: ['id', 'name'] }],
           })
             .then((user) => {
               if (user) {

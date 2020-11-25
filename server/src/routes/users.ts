@@ -6,6 +6,12 @@ const userRouter = express.Router();
 
 userRouter.get('', passport.authenticate('jwt', { session: false }), UserController.UserGet.me);
 
+userRouter.get(
+  '/all',
+  passport.authenticate('jwt', { session: false }),
+  UserController.UserGet.allUsers
+);
+
 userRouter.post(
   '',
   passport.authenticate('jwt', { session: false }),

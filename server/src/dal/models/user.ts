@@ -61,7 +61,10 @@ class User extends Model<IUserAttributes> implements IUserAttributes {
       where: {
         [Op.or]: [{ login: username }, { email: username }],
       },
-      include: [User.associations.roles],
+      include: [{ association: User.associations.roles, attributes: ['id', 'name'] }],
+      attributes: {
+        exclude: ['roleId', 'createdAt', 'updatedAt', 'RoleId'],
+      },
     });
   }
 
