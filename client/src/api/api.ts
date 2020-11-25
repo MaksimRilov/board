@@ -1,7 +1,10 @@
 import axios, { AxiosError } from 'axios';
 
-import { UserAttributes } from '../store/user/types';
-import { TaskAttributes } from '../store/task/types';
+import { UserAttributes, NewUserAttributes } from '../store/user/types';
+import {
+  TaskAttributes, PendingTaskAttributes,
+  EditPendingTask, StatusAttributes,
+} from '../store/task/types';
 
 const token = localStorage.getItem('token') || '';
 
@@ -27,7 +30,7 @@ export const UserApi = {
     };
   },
 
-  async registerUser(user: UserAttributes) {
+  async registerUser(user: NewUserAttributes) {
     try {
       const res = await instance.post<{isCreated: number}>('/user', user)
       return res.data;
@@ -40,6 +43,16 @@ export const UserApi = {
   async authUser() {
     try {
       const res = await instance.get<UserAttributes>('/user');
+      return res.data;
+    } catch (error) {
+      console.error(error);
+      return error as AxiosError;
+    };
+  },
+
+  async fetchAllUsers() {
+    try {
+      const res = await instance.get<Array<UserAttributes>>('user/all');
       return res.data;
     } catch (error) {
       console.error(error);
@@ -61,11 +74,43 @@ export const TaskApi = {
 
   async fetchAllPendingTask() {
     try {
-      const res = await instance.get<Array<TaskAttributes>>('/task/pending-task');
+      const res = await instance.get<Array<PendingTaskAttributes>>('/task/pending-task');
       return res.data;
     } catch (error) {
       console.error(error);
       return error as AxiosError;
     };
+  },
+
+  async editPendingTaskForm(task: EditPendingTask) {
+    try {
+      const res = await instance.put(`/task/${task.id}`, task);
+      return res.data;
+    } catch (error) {
+      console.error(error);
+      return error as AxiosError;
+    };
+  },
+
+  async rejectTask(taskId: string) {
+    try {
+      const res = await instance.put(`/task/reject/${taskId}`);
+      return res.data;
+    } catch (error) {
+      console.error(error);
+      return error as AxiosError;
+    };
+  },
+};
+
+export const StatusApi = {
+  async fetchStatuses() {
+    try {
+      const res = await instance.get<Array<StatusAttributes>>('/status');
+      return res.data;
+    } catch (error) {
+      console.error(error);
+      return error as AxiosError;
+    }
   },
 };

@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 
 import { RootState } from '../../store/rootReducer';
 import RegisterForm from '../../components/forms/RegisterForm';
-import { UserAttributes } from '../../store/user/types';
+import { NewUserAttributes } from '../../store/user/types';
 import { registerUser, actions } from '../../store/user/action';
 import { getUsernameIsFree, userIsCreated } from '../../store/user/selectors';
 
@@ -26,7 +26,7 @@ type MapStateToProps = {
 };
 
 type MapDispatchToProps = {
-  registerUser: (user: UserAttributes) => void,
+  registerUser: (user: NewUserAttributes) => void,
   usernameIsNotFree: (isFree: {flag: boolean, msg: null | string}) => void,
   userWasCreated: (isCreated: number | null) => void,
 };
@@ -58,7 +58,7 @@ const RegisterFormContainer:FC<Props> = ({
   userWasCreated,
 }) => {
 
-  const formikRef = useRef<FormikProps<UserAttributes>>(null);
+  const formikRef = useRef<FormikProps<NewUserAttributes>>(null);
 
   useEffect(() => {
     formikRef.current?.resetForm();
@@ -97,7 +97,7 @@ const RegisterFormContainer:FC<Props> = ({
           lastName: '',
           password: '',
         }}
-        onSubmit={(user: UserAttributes) => {
+        onSubmit={(user: NewUserAttributes) => {
           registerUser(user);
         }}
         validationSchema={validationSchema}

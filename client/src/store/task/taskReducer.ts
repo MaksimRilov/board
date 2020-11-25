@@ -1,10 +1,12 @@
 import { Actions } from './action';
-import { TaskAttributes } from './types';
+import { TaskAttributes, PendingTaskAttributes, StatusAttributes } from './types';
 
 const initialValues = {
   isCreated: null as number | null,
-  pendingTasks: null as Array<TaskAttributes> | null,
-  approvedTasks: null as Array<TaskAttributes> | null,
+  pendingTasks: [] as Array<PendingTaskAttributes>,
+  approvedTasks: [] as Array<TaskAttributes>,
+  currentTask: null as PendingTaskAttributes | null,
+  statuses: [] as Array<StatusAttributes>,
 };
 
 const taskReducer = (state = initialValues, action: Actions): InitialValues => {
@@ -20,6 +22,25 @@ const taskReducer = (state = initialValues, action: Actions): InitialValues => {
         ...state,
         pendingTasks: action.tasks,
       };
+    }
+    case 'TASK/SET_CURRENT_TASK': {
+      const currentTask  = state.pendingTasks.find((t) => t.id === action.taskId);
+      if (action.taskId === null || !currentTask) {
+        return {
+          ...state,
+          currentTask: null,
+        }
+      }
+      return {
+        ...state,
+        currentTask: currentTask,
+      }
+    }
+    case 'TASK/SET_STATUSES': {
+      return {
+        ...state,
+        statuses: action.statuses,
+      }
     }
     default:
       return state;

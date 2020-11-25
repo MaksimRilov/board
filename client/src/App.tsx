@@ -11,12 +11,11 @@ import HeaderContainer from './containers/header/HeaderContainer';
 import PendingTasksContainer from './containers/pendingTasks/PendingTasksContainer';
 import { RootState } from './store/rootReducer';
 import { authUser } from './store/user/action';
-import { getIsAuth, getIsInitialized } from './store/user/selectors';
+import { getIsInitialized } from './store/user/selectors';
 
 const SyspensePendingTasks = withSyspense(PendingTasksContainer);
 
 type MapStateToProps = {
-  isAuth: boolean,
   isInitialized: boolean,
 };
 
@@ -27,8 +26,7 @@ type MapDispatchToProps = {
 type Props = MapStateToProps & MapDispatchToProps;
 
 const  App: FC<Props> = ({
-  authUser, isAuth,
-  isInitialized,
+  authUser, isInitialized,
 }) => {
 
   useEffect(() => {
@@ -56,7 +54,6 @@ const  App: FC<Props> = ({
 }
 
 const mapStateToProps = (state: RootState): MapStateToProps => ({
-  isAuth: getIsAuth(state),
   isInitialized: getIsInitialized(state),
 });
 

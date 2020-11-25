@@ -4,23 +4,24 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
 import PendingTaskItem from './PendingTaskItem';
-import { TaskAttributes } from '../../store/task/types';
+import { PendingTaskAttributes } from '../../store/task/types';
 
 type OwnProps = {
-  pendingTasks: Array<TaskAttributes> | null,
+  pendingTasks: Array<PendingTaskAttributes> | null,
+  setCurrentTask: (taskId: number) => void,
 };
 
 type Props = OwnProps;
 
 const PendingTasks: FC<Props> = ({
-  pendingTasks,
+  pendingTasks, setCurrentTask,
 }) => {
 
   return (
     <Box clone pt={3}>
-      <Grid container justify="space-between" spacing={3}>
-        { pendingTasks && pendingTasks?.length
-            ? pendingTasks?.map((task) => <PendingTaskItem task={task} key={task.id} />)
+      <Grid container spacing={3}>
+        { pendingTasks && pendingTasks.length
+            ? pendingTasks.map((task) => <PendingTaskItem task={task} key={task.id} setCurrentTask={setCurrentTask} />)
             : <Grid item>
                 <Typography>Новых задач нет</Typography>
               </Grid>

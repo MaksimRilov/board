@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import moment from 'moment';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -8,7 +9,7 @@ import CardActions from '@material-ui/core/CardActions';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
-import { TaskAttributes } from '../../store/task/types';
+import { PendingTaskAttributes } from '../../store/task/types';
 
 const useStyles = makeStyles({
   date: {
@@ -17,13 +18,14 @@ const useStyles = makeStyles({
 });
 
 type OwnProps = {
-  task: TaskAttributes,
+  task: PendingTaskAttributes,
+  setCurrentTask: (taskId: number) => void,
 };
 
 type Props = OwnProps;
 
 const PendingTaskItem: FC<Props> = ({
-  task,
+  task, setCurrentTask,
 }) => {
   const classes = useStyles();
 
@@ -32,14 +34,22 @@ const PendingTaskItem: FC<Props> = ({
       <Card>
 
         <CardContent>
-          <Typography color="textSecondary" gutterBottom className={classes.date}>{moment(task.completionDate).format('L')}</Typography>
+          <Typography color="textSecondary" gutterBottom className={classes.date}>{moment(task.createdAt).format('L')}</Typography>
           <Typography variant="h5" component="h2" align="center" gutterBottom>{task.title}</Typography>
           <Typography color="textSecondary" >Автор: {task.author || 'Автор не указан'}</Typography>
           <Typography color="textSecondary">Email: {task.email || 'Email не указан'}</Typography>
         </CardContent>
 
         <CardActions>
-          <Button size="small" color="primary">Редактировать</Button>
+          <Button
+            size="small"
+            color="primary"
+            component={RouterLink}
+            to={`/pending-tasks/${task.id}`}
+            onClick={() => setCurrentTask(task.id!)}
+          >
+              Редактировать
+            </Button>
         </CardActions>
 
       </Card>

@@ -2,7 +2,7 @@ import { AxiosError } from 'axios';
 
 import { UserApi } from '../../api/api';
 import { InferActions, BaseThunk } from '../rootReducer';
-import { UserAttributes } from './types';
+import { UserAttributes, NewUserAttributes } from './types';
 
 const isError = (res: any): res is AxiosError => {
   if ((res.isAxiosError !== undefined)) {
@@ -35,6 +35,10 @@ export const actions = {
   logoutUser: () => ({
     type: 'USER/LOGOUT_USER'
   } as const),
+  setAllUsers: (users: Array<UserAttributes>) => ({
+    type: 'USER/SET_ALL_USERS',
+    users,
+  } as const)
 }
 
 export const loginUser = (loginData: { username: string, password: string }): Thunk => {
@@ -57,7 +61,7 @@ export const loginUser = (loginData: { username: string, password: string }): Th
   };
 };
 
-export const registerUser = (user: UserAttributes): Thunk => {
+export const registerUser = (user: NewUserAttributes): Thunk => {
   return async (dispatch) => {
     const data = await UserApi.registerUser(user);
 
@@ -100,6 +104,19 @@ export const authUser = (): Thunk => {
     };
   };
 };
+
+export const fetchAllUsers = (): Thunk => {
+  return async (dispatch) => {
+    const data = await UserApi.fetchAllUsers();
+    
+    if (!isError(data)) {
+      dispatch(actions.setAllUsers(data));
+    } else {
+      console.log('error', data)
+      // TODO dispatch ошибки
+    };
+  }
+}
 
 export type Actions = InferActions<typeof actions>;
 type Thunk = BaseThunk<Actions>

@@ -4,6 +4,7 @@ import { Actions } from './action';
 const initialState = {
   isAuth: false,
   user: null as UserAttributes | null,
+  allUsers: [] as Array<UserAttributes>,
   badLoginData: false,
   isFree: {
     flag: false,
@@ -53,7 +54,13 @@ const userReducer = (state = initialState, action: Actions): InitialState => {
         ...state,
         isAuth: false,
         user: null,
-      }
+      };
+    }
+    case 'USER/SET_ALL_USERS': {
+      return {
+        ...state,
+        allUsers: action.users,
+      };
     }
     default:
       return state;

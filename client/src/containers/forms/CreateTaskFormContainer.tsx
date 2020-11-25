@@ -79,13 +79,9 @@ const CreateTaskFormContainer: FC<Props> = ({
           description: '',
           email: '',
           author: '',
-          completionDate: new Date(),
         }}
         onSubmit={(task: TaskAttributes) => {
-          createTask({
-            ...task,
-            completionDate: new Date(),
-          });
+          createTask(task);
         }}
         validationSchema={validationSchema}
       >
