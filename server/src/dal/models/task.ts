@@ -100,7 +100,7 @@ Task.belongsTo(Status, {
   as: 'statuses',
 });
 
-Task.belongsToMany(User, { through: 'userstasks', as: 'users' });
-User.belongsToMany(Task, { through: 'userstasks', as: 'users' });
+Task.belongsToMany(User, { through: 'userstasks', as: 'users', timestamps: false });
+User.belongsToMany(Task, { through: 'userstasks', as: 'users', timestamps: false });
 
 export default Task;

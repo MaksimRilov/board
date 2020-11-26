@@ -25,4 +25,6 @@ taskRouter.get(
   TaskController.TaskGet.getAllPendingTask
 );
 
+taskRouter.get('/approved-task', TaskController.TaskGet.getAllApprovedTask);
+
 export default taskRouter;

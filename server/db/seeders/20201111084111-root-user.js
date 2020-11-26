@@ -9,9 +9,9 @@ module.exports = {
       'users',
       [
         {
-          firstName: 'root',
-          lastName: 'testovich',
-          email: 'test@test.test',
+          firstName: 'Максим',
+          lastName: 'Рылов',
+          email: 'mrylov@smartru.com',
           login: 'root',
           password: bcrypt.hashSync('root', salt),
           salt,
