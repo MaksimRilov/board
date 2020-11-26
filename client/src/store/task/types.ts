@@ -1,11 +1,13 @@
-export type TaskAttributes = {
+import { UserAttributes } from '../user/types';
+
+export interface TaskAttributes {
   title: string,
   description: string,
   email?: string,
   author?: string,
 };
 
-export type PendingTaskAttributes = {
+export interface PendingTaskAttributes {
   id: number,
   title: string,
   description: string,
@@ -21,7 +23,7 @@ export type PendingTaskAttributes = {
   },
 };
 
-export type EditPendingTask = {
+export interface EditPendingTask {
   id: number,
   title: string,
   description: string,
@@ -38,7 +40,18 @@ export type EditPendingTask = {
   },
 };
 
-export type StatusAttributes = {
+export interface ApprovedTaskUser extends UserAttributes {
+  userstasks: {
+    TaskId: number,
+    UserId: number,
+  },
+};
+
+export interface ApprovedTaskAttributes extends PendingTaskAttributes {
+  users: Array<ApprovedTaskUser>
+}
+
+export interface StatusAttributes {
   id: number,
   name: string,
 };

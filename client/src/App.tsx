@@ -3,17 +3,20 @@ import { connect } from "react-redux";
 import {
   Switch,
   Route,
+  Redirect,
 } from 'react-router-dom';
 import Container from '@material-ui/core/Container';
 
-import { withSyspense } from './hoc/withSyspense';
+// import { withSyspense } from './hoc/withSyspense';
 import HeaderContainer from './containers/header/HeaderContainer';
 import PendingTasksContainer from './containers/pendingTasks/PendingTasksContainer';
+import ApprovedTasksContainer from './containers/approvedTasks/ApprovedTasksContainer';
 import { RootState } from './store/rootReducer';
 import { authUser } from './store/user/action';
 import { getIsInitialized } from './store/user/selectors';
 
-const SyspensePendingTasks = withSyspense(PendingTasksContainer);
+// const SyspensePendingTasks = withSyspense(PendingTasksContainer);
+// const SyspenseApprovedTasks = withSyspense(ApprovedTasksContainer);
 
 type MapStateToProps = {
   isInitialized: boolean,
@@ -40,12 +43,13 @@ const  App: FC<Props> = ({
       { isInitialized
         ? <Container maxWidth={false}>
             <Switch>
-              <Route exact path="/" render={() => <div>MAIN</div>} />
-              <Route path="/pending-tasks" render={() => <SyspensePendingTasks />} />
+              <Route exact path="/" render={() => <Redirect to="/approved-tasks" />} />
+              <Route path="/approved-tasks" render={() => <ApprovedTasksContainer />} />
+              <Route path="/pending-tasks" render={() => <PendingTasksContainer />} />
             </Switch>
           </Container>
           // TODO добавить нормальный preloader
-        : <div>loader...</div>
+        : null
       }
 
       

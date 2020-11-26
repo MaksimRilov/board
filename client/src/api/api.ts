@@ -4,6 +4,7 @@ import { UserAttributes, NewUserAttributes } from '../store/user/types';
 import {
   TaskAttributes, PendingTaskAttributes,
   EditPendingTask, StatusAttributes,
+  ApprovedTaskAttributes,
 } from '../store/task/types';
 
 const token = localStorage.getItem('token') || '';
@@ -82,7 +83,7 @@ export const TaskApi = {
     };
   },
 
-  async editPendingTaskForm(task: EditPendingTask) {
+  async editTaskForm(task: EditPendingTask | ApprovedTaskAttributes) {
     try {
       const res = await instance.put(`/task/${task.id}`, task);
       return res.data;
@@ -95,6 +96,16 @@ export const TaskApi = {
   async rejectTask(taskId: string) {
     try {
       const res = await instance.put(`/task/reject/${taskId}`);
+      return res.data;
+    } catch (error) {
+      console.error(error);
+      return error as AxiosError;
+    };
+  },
+
+  async fetchAllApprovedTask() {
+    try {
+      const res = await instance.get('/task/approved-task');
       return res.data;
     } catch (error) {
       console.error(error);

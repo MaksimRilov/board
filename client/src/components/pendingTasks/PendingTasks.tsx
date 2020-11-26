@@ -8,20 +8,20 @@ import { PendingTaskAttributes } from '../../store/task/types';
 
 type OwnProps = {
   pendingTasks: Array<PendingTaskAttributes> | null,
-  setCurrentTask: (taskId: number) => void,
+  setPendingCurrentTask: (taskId: number) => void,
 };
 
 type Props = OwnProps;
 
 const PendingTasks: FC<Props> = ({
-  pendingTasks, setCurrentTask,
+  pendingTasks, setPendingCurrentTask,
 }) => {
 
   return (
     <Box clone pt={3}>
       <Grid container spacing={3}>
         { pendingTasks && pendingTasks.length
-            ? pendingTasks.map((task) => <PendingTaskItem task={task} key={task.id} setCurrentTask={setCurrentTask} />)
+            ? pendingTasks.map((task) => <PendingTaskItem task={task} key={task.id} setPendingCurrentTask={setPendingCurrentTask} />)
             : <Grid item>
                 <Typography>Новых задач нет</Typography>
               </Grid>

@@ -17,7 +17,7 @@ export function withAuthRedirect<WCP>(WrappedComponent: React.ComponentType<WCP>
   const RedirectComponent: React.FC<MapStateToProps & {}> = (props) => {
     const { isAuth, ...restProps } = props;
     
-    if (!isAuth) return <Redirect to="/" />
+    if (!isAuth) return <Redirect to="/approved-tasks" />
  
     return <WrappedComponent {...restProps as WCP} />
   }

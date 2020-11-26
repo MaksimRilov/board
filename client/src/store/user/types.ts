@@ -1,4 +1,4 @@
-export type NewUserAttributes = {
+export interface NewUserAttributes {
   login: string,
   email: string,
   firstName: string,
@@ -6,13 +6,13 @@ export type NewUserAttributes = {
   password: string,
 };
 
-export type UserAttributes = {
+export interface UserAttributes {
   id: number,
   login: string,
   email: string,
   firstName: string,
   lastName: string,
-  role: {
+  roles: {
     id: number,
     name: string,
   },

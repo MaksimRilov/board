@@ -1,11 +1,15 @@
 import { Actions } from './action';
-import { TaskAttributes, PendingTaskAttributes, StatusAttributes } from './types';
+import {
+  PendingTaskAttributes,  ApprovedTaskAttributes,
+  StatusAttributes,
+} from './types';
 
 const initialValues = {
   isCreated: null as number | null,
   pendingTasks: [] as Array<PendingTaskAttributes>,
-  approvedTasks: [] as Array<TaskAttributes>,
-  currentTask: null as PendingTaskAttributes | null,
+  approvedTasks: [] as Array<ApprovedTaskAttributes>,
+  pendingCurrentTask: null as PendingTaskAttributes | null,
+  approvedCurrentTask: null as ApprovedTaskAttributes | null,
   statuses: [] as Array<StatusAttributes>,
 };
 
@@ -23,23 +27,42 @@ const taskReducer = (state = initialValues, action: Actions): InitialValues => {
         pendingTasks: action.tasks,
       };
     }
-    case 'TASK/SET_CURRENT_TASK': {
+    case 'TASK/SET_PENDING_CURRENT_TASK': {
       const currentTask  = state.pendingTasks.find((t) => t.id === action.taskId);
       if (action.taskId === null || !currentTask) {
         return {
           ...state,
-          currentTask: null,
+          pendingCurrentTask: null,
         }
       }
       return {
         ...state,
-        currentTask: currentTask,
+        pendingCurrentTask: currentTask,
+      }
+    }
+    case 'TASK/SET_APPROVED_CURRENT_TASK': {
+      const currentTask  = state.approvedTasks.find((t) => t.id === action.taskId);
+      if (action.taskId === null || !currentTask) {
+        return {
+          ...state,
+          approvedCurrentTask: null,
+        }
+      }
+      return {
+        ...state,
+        approvedCurrentTask: currentTask,
       }
     }
     case 'TASK/SET_STATUSES': {
       return {
         ...state,
         statuses: action.statuses,
+      }
+    }
+    case 'TASK/SET_ALL_APPROVED_TASK': {
+      return {
+        ...state,
+        approvedTasks: action.tasks,
       }
     }
     default:

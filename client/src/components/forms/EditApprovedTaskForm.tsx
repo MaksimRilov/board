@@ -39,16 +39,20 @@ const MenuProps = {
 
 type OwnProps = {
   values: {
-    usersId: Array<number>,
-    completionDate: string,
     author?: string,
     email?: string,
+    completionDate: string,
     description: string,
+    usersId: Array<number>,
     statusId: number,
+    statuses: {
+      id: number,
+      name: string,
+    },
+    users: Array<UserAttributes>,
   },
   setFieldValue: (field: string, value: any) => void,
   setFieldTouched: (field: string, value: any) => void,
-  handleRejectTask: () => void,
   users: Array<UserAttributes>,
   statuses: Array<StatusAttributes>,
   touched: FormikTouched<{
@@ -70,17 +74,18 @@ type OwnProps = {
   isValid: boolean,
   dirty: boolean,
   close: () => void,
+  isAuth: boolean,
 };
 
 type Props = OwnProps;
 
-const EditPendingTaskForm: FC<Props> = ({
+const EditApprovedTaskForm: FC<Props> = ({
   values, users,
-  setFieldValue, touched,
+  setFieldValue, setFieldTouched,
   errors, isValid,
-  setFieldTouched, dirty,
-  close, handleRejectTask,
-  statuses,
+  dirty, touched,
+  statuses, close,
+  isAuth,
 }) => {
   const classes = useStyles();
 
@@ -137,6 +142,7 @@ const EditPendingTaskForm: FC<Props> = ({
               required
               error={touched.usersId && Boolean(errors.usersId)}
               margin="dense"
+              disabled={!isAuth}
             >
               <InputLabel>Ответственные</InputLabel>
               <Select
@@ -144,44 +150,62 @@ const EditPendingTaskForm: FC<Props> = ({
                 multiple
                 value={values.usersId}
                 input={<Input />}
-                renderValue={(selected) => {
-                  const values = users.filter((user => (selected as number[]).find((s) => user.id === s)));
-                  const names = values.map((v) => `${v.firstName} ${v.lastName}`).join(', ');
-                  return names;
+                renderValue={
+                  (selected) => {
+                    if (isAuth) {
+                      const filteredValues = users.filter((user => (selected as number[]).find((s) => user.id === s)));
+                      const names = filteredValues.map((v) => `${v.firstName} ${v.lastName}`).join(', ');
+                      return names;
+                    } else {
+                      const filteredValues = values.users.filter((user => (selected as number[]).find((s) => user.id === s)));
+                      const names = filteredValues.map((v) => `${v.firstName} ${v.lastName}`).join(', ');
+                      return names;
+                    }
                 }}
                 onChange={(e) => handleChangeSelect(e, 'usersId')}
                 onBlur={(e) => handleBlurSelect(e, 'usersId')}
                 MenuProps={MenuProps}
               >
-                {users.map((user) => (
-                  <MenuItem
-                    key={user.id}
-                    value={user.id}
-                  >
-                    <Checkbox checked={values.usersId.indexOf(user.id) > -1} />
+
+                {isAuth
+                  ? users.map((user) => (
+                    <MenuItem
+                      key={user.id}
+                      value={user.id}
+                    >
+                      <Checkbox checked={values.usersId.indexOf(user.id) > -1} />
                     <ListItemText primary={`${user.firstName} ${user.lastName}`} />
-                  </MenuItem>
-                ))}
+                    </MenuItem>))
+                  : values.users.map((user) => (
+                    <MenuItem
+                      key={user.id}
+                      value={user.id}
+                    >
+                      <Checkbox checked={values.usersId.indexOf(user.id) > -1} />
+                    <ListItemText primary={`${user.firstName} ${user.lastName}`} />
+                    </MenuItem>))
+                }
               </Select>
               {touched.usersId ? <FormHelperText>{errors.usersId}</FormHelperText> : ''}
             </FormControl>
           </Grid>
 
           <Grid item xs={6}>
-            <TextField
-              id="completionDate"
-              type="datetime-local"
-              value={values.completionDate}
-              onChange={(e) => handleChangeSelect(e, 'completionDate')}
-              onBlur={(e) => handleBlurSelect(e, 'completionDate')}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              margin="dense"
-              label="Дата выполнения"
-              fullWidth
-              required
-            />
+              <TextField
+                id="completionDate"
+                type="datetime-local"
+                value={values.completionDate}
+                onChange={(e) => handleChangeSelect(e, 'completionDate')}
+                onBlur={(e) => handleBlurSelect(e, 'completionDate')}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                margin="dense"
+                label="Дата выполнения"
+                fullWidth
+                required
+                disabled={!isAuth}
+              />
           </Grid>
 
           <Grid item xs={4}>
@@ -190,6 +214,7 @@ const EditPendingTaskForm: FC<Props> = ({
               required
               error={touched.statusId && Boolean(errors.statusId)}
               margin="dense"
+              disabled={!isAuth}
             >
               <InputLabel>Статус задачи</InputLabel>
               <Select
@@ -198,33 +223,35 @@ const EditPendingTaskForm: FC<Props> = ({
                 onChange={(e) => handleChangeSelect(e, 'statusId')}
                 onBlur={(e) => handleBlurSelect(e, 'statusId')}
               >
-                {statuses.map((status) => (
-                  <MenuItem key={status.id} value={status.id}>
-                    <ListItemText>{status.name}</ListItemText>
-                  </MenuItem>
-                ))}
+                {isAuth
+                  ? statuses.map((status) => (
+                    <MenuItem key={status.id} value={status.id}>
+                      <ListItemText>{status.name}</ListItemText>
+                    </MenuItem>))
+                  : <MenuItem value={values.statuses.id}>
+                      <ListItemText>{values.statuses.name}</ListItemText>
+                    </MenuItem>
+                }
               </Select>
-                {touched.statusId ? <FormHelperText>{errors.statusId}</FormHelperText> : ''}
+              {touched.statusId ? <FormHelperText>{errors.statusId}</FormHelperText> : ''}
             </FormControl>
           </Grid>
 
         </Grid>
-
       </DialogContent>
 
       <DialogActions>
-        <Button color="primary" variant="contained" type="submit" disabled={!(dirty && isValid)}>
-          Принять задачу
-        </Button>
-        <Button color="secondary" onClick={handleRejectTask}>
-          Отклонить задачу
-        </Button>
+        {isAuth && 
+          <Button color="primary" variant="contained" type="submit" disabled={!(dirty && isValid)}>
+            Изменить
+          </Button>
+        }
         <Button color="secondary" onClick={close}>
-          Отмена
+          Закрыть
         </Button>
       </DialogActions>
     </>
   )
 }
 
-export default EditPendingTaskForm;
+export default EditApprovedTaskForm;

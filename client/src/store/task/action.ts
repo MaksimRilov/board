@@ -5,6 +5,7 @@ import { TaskApi, StatusApi } from '../../api/api';
 import {
   TaskAttributes, PendingTaskAttributes,
   EditPendingTask, StatusAttributes,
+  ApprovedTaskAttributes,
 } from './types';
 
 const isError = (res: any): res is AxiosError => {
@@ -24,13 +25,21 @@ export const actions = {
     type: 'TASK/SET_ALL_PENDING_TASK',
     tasks,
   } as const),
-  setCurrentTask: (taskId: number | null) => ({
-    type: 'TASK/SET_CURRENT_TASK',
+  setPendingCurrentTask: (taskId: number | null) => ({
+    type: 'TASK/SET_PENDING_CURRENT_TASK',
     taskId,
   } as const),
   setStatuses: (statuses: Array<StatusAttributes>) => ({
     type: 'TASK/SET_STATUSES',
     statuses,
+  } as const),
+  setAllApprovedTask: (tasks: Array<ApprovedTaskAttributes>) => ({
+    type: 'TASK/SET_ALL_APPROVED_TASK',
+    tasks,
+  } as const),
+  setApprovedCurrentTask: (taskId: number | null) => ({
+    type: 'TASK/SET_APPROVED_CURRENT_TASK',
+    taskId,
   } as const),
 };
 
@@ -44,7 +53,7 @@ export const createTask = (task: TaskAttributes): Thunk => {
       dispatch(actions.taskWasCreated(null));
       console.log('error', data);
       // TODO dispatch ошибки
-    }
+    };
   };
 };
 
@@ -55,25 +64,38 @@ export const fetchAllPendingTask = (taskId?: number): Thunk => {
     if (!isError(data)) {
       dispatch(actions.setAllPendingTask(data));
       if (taskId) {
-        dispatch(actions.setCurrentTask(taskId));
+        dispatch(actions.setPendingCurrentTask(taskId));
       }
     } else {
       console.log('error', data);
       // TODO dispatch ошибки
-    }
+    };
   };
 };
 
 export const editPendingTask = (task: EditPendingTask): Thunk => {
   return async (dispatch) => {
-    const data = await TaskApi.editPendingTaskForm(task);
+    const data = await TaskApi.editTaskForm(task);
 
     if (!isError(data)) {
       dispatch(fetchAllPendingTask());
     } else {
       console.log('error', data);
       // TODO dispatch ошибки
-    }
+    };
+  };
+};
+
+export const editApprovedTask = (task: ApprovedTaskAttributes): Thunk => {
+  return async (dispatch) => {
+    const data = await TaskApi.editTaskForm(task);
+
+    if (!isError(data)) {
+      dispatch(fetchAllApprovedTask());
+    } else {
+      console.log('error', data);
+      // TODO dispatch ошибки
+    };
   };
 };
 
@@ -86,7 +108,7 @@ export const rejectTask = (taskId: string): Thunk => {
     } else {
       console.log('error', data);
       // TODO dispatch ошибки
-    }
+    };
   };
 };
 
@@ -99,7 +121,23 @@ export const fetchStatuses = (): Thunk => {
     } else {
       console.log('error', data);
       // TODO dispatch ошибки
-    }
+    };
+  };
+};
+
+export const fetchAllApprovedTask = (taskId?: number): Thunk => {
+  return async (dispatch) => {
+    const data = await TaskApi.fetchAllApprovedTask();
+
+    if (!isError(data)) {
+      dispatch(actions.setAllApprovedTask(data));
+      if (taskId) {
+        dispatch(actions.setApprovedCurrentTask(taskId));
+      }
+    } else {
+      console.log('error', data);
+      // TODO dispatch ошибки
+    };
   }
 }
 

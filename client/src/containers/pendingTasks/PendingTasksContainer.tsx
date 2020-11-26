@@ -8,7 +8,7 @@ import { RootState } from '../../store/rootReducer';
 import { PendingTaskAttributes } from '../../store/task/types';
 import { getPendingTasks } from '../../store/task/selectors';
 import { fetchAllPendingTask, actions } from '../../store/task/action';
-import PendingTasks from '../../components/pendingTask/PendingTasks';
+import PendingTasks from '../../components/pendingTasks/PendingTasks';
 import EditPendingTaskFormContainer from '../forms/EditPendingTaskFormContainer';
 
 type MapStateToProps = {
@@ -17,31 +17,29 @@ type MapStateToProps = {
 
 type MapDispatchToProps = {
   fetchAllPendingTask: (taskId?: number) => void,
-  setCurrentTask: (taskId: number) => void,
+  setPendingCurrentTask: (taskId: number) => void,
 };
 
 type Props = MapStateToProps & MapDispatchToProps;
 
 const PendingTasksContainer: FC<Props> = ({
   pendingTasks, fetchAllPendingTask,
-  setCurrentTask,
+  setPendingCurrentTask,
 }) => {
 
   const match = useRouteMatch<{taskId: string | undefined}>('/pending-tasks/:taskId');
 
   useEffect(() => {
-    if (!pendingTasks.length) {
-      if (match?.params.taskId) {
-        fetchAllPendingTask(Number(match.params.taskId));
-      } else {
-        fetchAllPendingTask();
-      }
+    if (match?.params.taskId) {
+      fetchAllPendingTask(Number(match.params.taskId));
+    } else {
+      fetchAllPendingTask();
     }
   }, []);
 
   return (
     <>
-      <PendingTasks pendingTasks={pendingTasks} setCurrentTask={setCurrentTask} />
+      <PendingTasks pendingTasks={pendingTasks} setPendingCurrentTask={setPendingCurrentTask} />
       <Route exact path="/pending-tasks/:taskId" render={() => <EditPendingTaskFormContainer />} />
     </>
   )
@@ -54,7 +52,7 @@ const mapStateToProps = (state: RootState): MapStateToProps => ({
 export default compose<React.ComponentType>(
   connect<MapStateToProps, MapDispatchToProps, {}, RootState>(mapStateToProps, {
     fetchAllPendingTask,
-    setCurrentTask: actions.setCurrentTask,
+    setPendingCurrentTask: actions.setPendingCurrentTask,
   }),
   withAuthRedirect,
 )(PendingTasksContainer);

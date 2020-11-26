@@ -19,13 +19,13 @@ const useStyles = makeStyles({
 
 type OwnProps = {
   task: PendingTaskAttributes,
-  setCurrentTask: (taskId: number) => void,
+  setPendingCurrentTask: (taskId: number) => void,
 };
 
 type Props = OwnProps;
 
 const PendingTaskItem: FC<Props> = ({
-  task, setCurrentTask,
+  task, setPendingCurrentTask,
 }) => {
   const classes = useStyles();
 
@@ -46,7 +46,7 @@ const PendingTaskItem: FC<Props> = ({
             color="primary"
             component={RouterLink}
             to={`/pending-tasks/${task.id}`}
-            onClick={() => setCurrentTask(task.id!)}
+            onClick={() => setPendingCurrentTask(task.id)}
           >
               Редактировать
             </Button>

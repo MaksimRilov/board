@@ -9,14 +9,14 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography';
 
 import { RootState } from '../../store/rootReducer';
-import { getCurrentTask, getStatuses } from '../../store/task/selectors';
+import { getPendingCurrentTask, getStatuses } from '../../store/task/selectors';
 import { PendingTaskAttributes, EditPendingTask, StatusAttributes } from '../../store/task/types';
 import {
-  editPendingTask, actions as TaskActions,
+  editPendingTask, actions as taskActions,
   rejectTask, fetchStatuses,
 } from '../../store/task/action';
 import { UserAttributes } from '../../store/user/types';
-import { fetchAllUsers, actions as UserActions } from '../../store/user/action';
+import { fetchAllUsers, actions as userActions } from '../../store/user/action';
 import { getAllUsers } from '../../store/user/selectors';
 import EditPendingTaskForm from '../../components/forms/EditPendingTaskForm';
 
@@ -27,7 +27,7 @@ type MapStateToProps = {
 };
 
 type MapDispatchToProps = {
-  setCurrentTask: (taskId: null) => void,
+  setPendingCurrentTask: (taskId: null) => void,
   fetchAllUsers: () => void,
   editPendingTask: (task: EditPendingTask) => void,
   setAllUsers: (users: Array<UserAttributes>) => void,
@@ -52,7 +52,7 @@ const validationSchema = Yup.object({
 });
 
 const EditPendingTaskFormContainer: FC<Props> = ({
-  currentTask, setCurrentTask,
+  currentTask, setPendingCurrentTask,
   fetchAllUsers, users,
   editPendingTask, setAllUsers,
   rejectTask, fetchStatuses,
@@ -63,15 +63,12 @@ const EditPendingTaskFormContainer: FC<Props> = ({
 
   useEffect(() => {
     fetchAllUsers();
-  }, []);
-
-  useEffect(() => {
     fetchStatuses();
-  }, [])
+  }, []);
 
   const handleClose = () => {
     history.replace('/pending-tasks');
-    setCurrentTask(null);
+    setPendingCurrentTask(null);
     setAllUsers([]);
     setStatuses([]);
   }
@@ -108,8 +105,8 @@ const EditPendingTaskFormContainer: FC<Props> = ({
               completionDate: momemt(new Date()).format('YYYY-MM-DDThh:mm'),
               createdAt: currentTask.createdAt,
               updatedAt: currentTask.updatedAt,
-              author: currentTask!.author,
-              email: currentTask!.email,
+              author: currentTask.author,
+              email: currentTask.email,
               description: currentTask!.description,
               statusId: currentTask.statusId,
               statuses: currentTask.statuses,
@@ -151,17 +148,17 @@ const EditPendingTaskFormContainer: FC<Props> = ({
 }
 
 const mapStateToProps = (state: RootState): MapStateToProps => ({
-  currentTask: getCurrentTask(state),
+  currentTask: getPendingCurrentTask(state),
   users: getAllUsers(state),
   statuses: getStatuses(state),
 });
 
 export default connect<MapStateToProps, MapDispatchToProps, {}, RootState>(mapStateToProps, {
-  setCurrentTask: TaskActions.setCurrentTask,
+  setPendingCurrentTask: taskActions.setPendingCurrentTask,
   rejectTask,
   fetchAllUsers,
   editPendingTask,
-  setAllUsers: UserActions.setAllUsers,
-  setStatuses: TaskActions.setStatuses,
+  setAllUsers: userActions.setAllUsers,
+  setStatuses: taskActions.setStatuses,
   fetchStatuses,
 })(EditPendingTaskFormContainer);
