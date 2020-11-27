@@ -11,6 +11,7 @@ import Container from '@material-ui/core/Container';
 import HeaderContainer from './containers/header/HeaderContainer';
 import PendingTasksContainer from './containers/pendingTasks/PendingTasksContainer';
 import ApprovedTasksContainer from './containers/approvedTasks/ApprovedTasksContainer';
+import RejectedTasksContainer from './containers/rejectedTasks/RejectedTasksContainer';
 import { RootState } from './store/rootReducer';
 import { authUser } from './store/user/action';
 import { getIsInitialized } from './store/user/selectors';
@@ -44,8 +45,9 @@ const  App: FC<Props> = ({
         ? <Container maxWidth={false}>
             <Switch>
               <Route exact path="/" render={() => <Redirect to="/approved-tasks" />} />
-              <Route path="/approved-tasks" render={() => <ApprovedTasksContainer />} />
               <Route path="/pending-tasks" render={() => <PendingTasksContainer />} />
+              <Route path="/approved-tasks" render={() => <ApprovedTasksContainer />} />
+              <Route path="/rejected-tasks" render={() => <RejectedTasksContainer />} />
             </Switch>
           </Container>
           // TODO добавить нормальный preloader

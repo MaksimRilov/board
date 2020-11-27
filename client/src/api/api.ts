@@ -112,6 +112,16 @@ export const TaskApi = {
       return error as AxiosError;
     };
   },
+
+  async fetchAllRejectedTask() {
+    try {
+      const res = await instance.get('/task/rejected-task');
+      return res.data;
+    } catch (error) {
+      console.log(error);
+      return error as AxiosError;
+    };
+  },
 };
 
 export const StatusApi = {

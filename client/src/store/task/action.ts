@@ -41,6 +41,16 @@ export const actions = {
     type: 'TASK/SET_APPROVED_CURRENT_TASK',
     taskId,
   } as const),
+
+  setAllRejectedTask: (tasks: Array<ApprovedTaskAttributes>) => ({
+    type: 'TASK/SET_ALL_REJECTED_TASK',
+    tasks,
+  } as const),
+
+  setRejectedCurrentTask: (taskId: number | null) => ({
+    type: 'TASK/SET_REJECTED_CURRENT_TASK',
+    taskId,
+  } as const)
 };
 
 export const createTask = (task: TaskAttributes): Thunk => {
@@ -133,6 +143,22 @@ export const fetchAllApprovedTask = (taskId?: number): Thunk => {
       dispatch(actions.setAllApprovedTask(data));
       if (taskId) {
         dispatch(actions.setApprovedCurrentTask(taskId));
+      }
+    } else {
+      console.log('error', data);
+      // TODO dispatch ошибки
+    };
+  };
+};
+
+export const fetchAllRejectedTask = (taskId?: number): Thunk => {
+  return async (dispatch) => {
+    const data = await TaskApi.fetchAllRejectedTask();
+
+    if (!isError(data)) {
+      dispatch(actions.setAllRejectedTask(data));
+      if (taskId) {
+        dispatch(actions.setRejectedCurrentTask(taskId));
       }
     } else {
       console.log('error', data);
