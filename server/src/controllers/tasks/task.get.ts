@@ -41,3 +41,26 @@ export const getAllApprovedTask = (req: Request, res: Response): void => {
     })
     .catch((error) => res.status(400).send({ error }));
 };
+
+export const getAllRejectedTask = (req: Request, res: Response): void => {
+  Task.findAll({
+    where: {
+      statusId: 6,
+    },
+    include: [
+      { association: Task.associations.statuses, attributes: ['id', 'name'] },
+      {
+        association: Task.associations.users,
+        attributes: ['id', 'email', 'firstName', 'lastName'],
+        include: [{ association: User.associations.roles, attributes: ['id', 'name'] }],
+      },
+    ],
+    attributes: { exclude: ['StatusId'] },
+  })
+    .then((tasks) => {
+      if (tasks) {
+        res.status(200).send(tasks);
+      }
+    })
+    .catch((error) => res.status(400).send({ error }));
+};

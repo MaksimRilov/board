@@ -42,6 +42,7 @@ export const editTask = async (req: Request, res: Response): Promise<void> => {
         task.addUser(user);
       }
     }
+
     res.end();
   } catch (error) {
     res.status(500).send(error);
