@@ -27,4 +27,6 @@ taskRouter.get(
 
 taskRouter.get('/approved-task', TaskController.TaskGet.getAllApprovedTask);
 
+taskRouter.get('/rejected-task', TaskController.TaskGet.getAllRejectedTask);
+
 export default taskRouter;

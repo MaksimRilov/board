@@ -3,6 +3,7 @@ import { Sequelize } from 'sequelize';
 import cors from 'cors';
 import { json, urlencoded } from 'body-parser';
 import passport from 'passport';
+import nodemailer from 'nodemailer';
 import sequelizeConnect from './dal/config';
 import routes from './routes';
 import PassportLocalStrategy from './passport/local';
@@ -14,6 +15,14 @@ class Server {
   private app: Express;
 
   private sequelize: Sequelize;
+
+  public static transporter: nodemailer.Transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'mksm.rilov@gmail.com',
+      pass: 'Rjkjyrf2009r2003',
+    },
+  });
 
   constructor(sequelize: Sequelize) {
     this.sequelize = sequelize;
@@ -53,3 +62,5 @@ class Server {
 
 // eslint-disable-next-line no-new
 new Server(sequelizeConnect);
+
+export default Server;
