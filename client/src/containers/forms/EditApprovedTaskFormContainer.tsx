@@ -82,7 +82,7 @@ const EditApprovedTaskFormContainer: FC<Props> = ({
           >
 
             <DialogTitle>
-              <Typography>{currentTask?.title}</Typography>
+              <Typography>{currentTask.title}</Typography>
             </DialogTitle>
 
             <Formik

@@ -58,6 +58,19 @@ const HeaderMenuItems: FC<Props> = React.forwardRef(({
           </Button>
         </MenuItem>,
 
+        <MenuItem key="rejected">
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            onClick={closeMenu}
+            component={RouterLink}
+            to="/rejected-tasks"
+          >
+            Отклоненные задачи
+          </Button>
+        </MenuItem>,
+
         <MenuItem key="reg">
           <Button
             variant="contained"
@@ -78,6 +91,19 @@ const HeaderMenuItems: FC<Props> = React.forwardRef(({
             onClick={handleClickOpenAuthForm}
           >
             Авторизоваться
+          </Button>
+        </MenuItem>,
+
+        <MenuItem key="rejected">
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            onClick={closeMenu}
+            component={RouterLink}
+            to="/rejected-tasks"
+          >
+            Отклоненные задачи
           </Button>
         </MenuItem>,
       ]

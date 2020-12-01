@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Route, useRouteMatch  } from 'react-router-dom';
 
 import RejectedTasks from '../../components/rejectedTasks/rejectedTasks';
+import RejecedTaskFormContainer from '../forms/RejecedTaskFormContainer';
 import { RootState } from '../../store/rootReducer';
 import { fetchAllRejectedTask, actions } from '../../store/task/action';
 import { ApprovedTaskAttributes } from '../../store/task/types';
@@ -35,7 +36,10 @@ const RejectedTasksContainer: FC<Props> = ({
 
 
   return (
-    <RejectedTasks rejectedTasks={rejectedTasks} setRejectedCurrentTask={setRejectedCurrentTask} />
+    <>
+      <RejectedTasks rejectedTasks={rejectedTasks} setRejectedCurrentTask={setRejectedCurrentTask} />
+      <Route exact path="/rejected-tasks/:taskId" render={() => <RejecedTaskFormContainer />} />
+    </>
   )
 }
 
