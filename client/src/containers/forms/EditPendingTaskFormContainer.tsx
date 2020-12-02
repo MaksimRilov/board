@@ -64,7 +64,7 @@ const EditPendingTaskFormContainer: FC<Props> = ({
   useEffect(() => {
     fetchAllUsers();
     fetchStatuses();
-  }, []);
+  }, [fetchAllUsers, fetchStatuses]);
 
   const handleClose = () => {
     history.replace('/pending-tasks');

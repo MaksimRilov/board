@@ -59,10 +59,10 @@ const EditApprovedTaskFormContainer: FC<Props> = ({
 
   useEffect(() => {
     if (isAuth) {
-      fetchAllUsers();
       fetchStatuses();
+      fetchAllUsers();
     }
-  }, [isAuth]);
+  }, [fetchAllUsers, fetchStatuses, isAuth]);
 
   const handleClose = () => {
     history.replace('/approved-tasks');

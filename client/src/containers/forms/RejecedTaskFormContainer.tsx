@@ -1,8 +1,7 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Formik, Form } from 'formik';
-import * as Yup from 'yup';
 import momemt from 'moment';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -10,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 
 import RejectedTaskForm from '../../components/forms/RejectedTaskForm';
 import { RootState } from '../../store/rootReducer';
-import { ApprovedTaskAttributes, StatusAttributes } from '../../store/task/types'
+import { ApprovedTaskAttributes } from '../../store/task/types'
 import { getRejectedCurrentTask } from '../../store/task/selectors'
 import { actions } from '../../store/task/action'
 

@@ -32,6 +32,7 @@ const RejectedTasksContainer: FC<Props> = ({
     } else {
       fetchAllRejectedTask();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
 

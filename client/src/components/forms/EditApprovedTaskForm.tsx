@@ -219,7 +219,7 @@ const EditApprovedTaskForm: FC<Props> = ({
               <InputLabel>Статус задачи</InputLabel>
               <Select
                 id="statusId"
-                value={values.statusId}
+                value={(statuses.length ? values.statusId : !isAuth ? values.statusId : "")}
                 onChange={(e) => handleChangeSelect(e, 'statusId')}
                 onBlur={(e) => handleBlurSelect(e, 'statusId')}
               >

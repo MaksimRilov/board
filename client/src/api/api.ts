@@ -7,7 +7,9 @@ import {
   ApprovedTaskAttributes,
 } from '../store/task/types';
 
-const token = localStorage.getItem('token') || '';
+const getToken = () => localStorage.getItem('token') || ''
+
+const token = getToken();
 
 const instance = axios.create({
   baseURL: 'http://localhost:3000/api',
@@ -33,7 +35,7 @@ export const UserApi = {
 
   async registerUser(user: NewUserAttributes) {
     try {
-      const res = await instance.post<{isCreated: number}>('/user', user)
+      const res = await instance.post<{isCreated: number}>('/user/register', user)
       return res.data;
     } catch (error) {
       console.error(error);
@@ -43,7 +45,7 @@ export const UserApi = {
 
   async authUser() {
     try {
-      const res = await instance.get<UserAttributes>('/user');
+      const res = await instance.get<UserAttributes>('/user/me');
       return res.data;
     } catch (error) {
       console.error(error);
@@ -53,7 +55,7 @@ export const UserApi = {
 
   async fetchAllUsers() {
     try {
-      const res = await instance.get<Array<UserAttributes>>('user/all');
+      const res = await instance.get<Array<UserAttributes>>('/user');
       return res.data;
     } catch (error) {
       console.error(error);

@@ -35,6 +35,7 @@ const PendingTasksContainer: FC<Props> = ({
     } else {
       fetchAllPendingTask();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
