@@ -1,4 +1,11 @@
-import { Model, DataTypes, Association, HasManyAddAssociationMixin } from 'sequelize';
+import {
+  Model,
+  DataTypes,
+  Association,
+  HasManyAddAssociationMixin,
+  HasManyRemoveAssociationMixin,
+  HasManyGetAssociationsMixin,
+} from 'sequelize';
 import Status, { IStatusAttributes } from './status';
 import User, { IUserAttributes } from './user';
 
@@ -41,7 +48,11 @@ class Task extends Model<ITaskAttributes> implements ITaskAttributes {
 
   public users!: IUserAttributes;
 
+  public getUsers!: HasManyGetAssociationsMixin<User>;
+
   public addUser!: HasManyAddAssociationMixin<User, number>;
+
+  public removeUser!: HasManyRemoveAssociationMixin<User, number>;
 
   public static associations: {
     statuses: Association<Task, Status>;

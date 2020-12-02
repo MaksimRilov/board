@@ -3,11 +3,11 @@ import { Sequelize } from 'sequelize';
 import cors from 'cors';
 import { json, urlencoded } from 'body-parser';
 import passport from 'passport';
-import nodemailer from 'nodemailer';
 import sequelizeConnect from './dal/config';
 import routes from './routes';
 import PassportLocalStrategy from './passport/local';
 import PassportJWTStrategy from './passport/jwt';
+import SmtpService from './smtp/SmptService';
 
 const PORT = 3000; // TODO: вынести в ENV
 
@@ -16,13 +16,7 @@ class Server {
 
   private sequelize: Sequelize;
 
-  public static transporter: nodemailer.Transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'mksm.rilov@gmail.com',
-      pass: 'Rjkjyrf2009r2003',
-    },
-  });
+  public static transporter = new SmtpService();
 
   constructor(sequelize: Sequelize) {
     this.sequelize = sequelize;

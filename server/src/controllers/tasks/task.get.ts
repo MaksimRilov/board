@@ -4,7 +4,6 @@ import { Op } from 'sequelize';
 import Task from '../../dal/models/task';
 import User from '../../dal/models/user';
 
-// eslint-disable-next-line import/prefer-default-export
 export const getAllPendingTask = (req: Request, res: Response): void => {
   Task.findAll({
     where: {
