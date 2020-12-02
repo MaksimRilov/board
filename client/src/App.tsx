@@ -1,5 +1,6 @@
 import React, { FC, useEffect } from 'react';
 import { connect } from "react-redux";
+import { compose } from 'redux';
 import {
   Switch,
   Route,
@@ -8,13 +9,14 @@ import {
 import Container from '@material-ui/core/Container';
 
 // import { withSyspense } from './hoc/withSyspense';
+import { withLoader } from './hoc/withLoader';
 import HeaderContainer from './containers/header/HeaderContainer';
 import PendingTasksContainer from './containers/pendingTasks/PendingTasksContainer';
 import ApprovedTasksContainer from './containers/approvedTasks/ApprovedTasksContainer';
 import RejectedTasksContainer from './containers/rejectedTasks/RejectedTasksContainer';
 import { RootState } from './store/rootReducer';
 import { authUser } from './store/user/action';
-import { getIsInitialized } from './store/user/selectors';
+import { getIsInitialized } from './store/app/selectors';
 
 // const SyspensePendingTasks = withSyspense(PendingTasksContainer);
 // const SyspenseApprovedTasks = withSyspense(ApprovedTasksContainer);
@@ -63,6 +65,7 @@ const mapStateToProps = (state: RootState): MapStateToProps => ({
   isInitialized: getIsInitialized(state),
 });
 
-export default connect<MapStateToProps, MapDispatchToProps, {}, RootState>(mapStateToProps, {
-  authUser,
-})(App);
+export default compose<React.ComponentType>(
+  withLoader,
+  connect<MapStateToProps, MapDispatchToProps, {}, RootState>(mapStateToProps, {authUser}),
+)(App);

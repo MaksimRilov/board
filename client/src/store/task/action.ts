@@ -8,6 +8,8 @@ import {
   ApprovedTaskAttributes,
 } from './types';
 
+import { actions as appActions } from '../app/action';
+
 const isError = (res: any): res is AxiosError => {
   if ((res.isAxiosError !== undefined)) {
     return true;
@@ -55,6 +57,8 @@ export const actions = {
 
 export const createTask = (task: TaskAttributes): Thunk => {
   return async (dispatch) => {
+    dispatch(appActions.startFetch());
+
     const data = await TaskApi.createTask(task);
 
     if (!isError(data)) {
@@ -64,11 +68,15 @@ export const createTask = (task: TaskAttributes): Thunk => {
       console.log('error', data);
       // TODO dispatch ошибки
     };
+
+    dispatch(appActions.finishFetch());
   };
 };
 
 export const fetchAllPendingTask = (taskId?: number): Thunk => {
   return async (dispatch) => {
+    dispatch(appActions.startFetch());
+
     const data = await TaskApi.fetchAllPendingTask();
 
     if (!isError(data)) {
@@ -80,11 +88,15 @@ export const fetchAllPendingTask = (taskId?: number): Thunk => {
       console.log('error', data);
       // TODO dispatch ошибки
     };
+
+    dispatch(appActions.finishFetch());
   };
 };
 
 export const editPendingTask = (task: EditPendingTask): Thunk => {
   return async (dispatch) => {
+    dispatch(appActions.startFetch());
+
     const data = await TaskApi.editTaskForm(task);
 
     if (!isError(data)) {
@@ -93,11 +105,15 @@ export const editPendingTask = (task: EditPendingTask): Thunk => {
       console.log('error', data);
       // TODO dispatch ошибки
     };
+
+    dispatch(appActions.finishFetch());
   };
 };
 
 export const editApprovedTask = (task: ApprovedTaskAttributes): Thunk => {
   return async (dispatch) => {
+    dispatch(appActions.startFetch());
+
     const data = await TaskApi.editTaskForm(task);
 
     if (!isError(data)) {
@@ -106,11 +122,15 @@ export const editApprovedTask = (task: ApprovedTaskAttributes): Thunk => {
       console.log('error', data);
       // TODO dispatch ошибки
     };
+
+    dispatch(appActions.finishFetch());
   };
 };
 
 export const rejectTask = (taskId: string): Thunk => {
   return async (dispatch) => {
+    dispatch(appActions.startFetch());
+
     const data = await TaskApi.rejectTask(taskId);
 
     if (!isError(data)) {
@@ -119,11 +139,15 @@ export const rejectTask = (taskId: string): Thunk => {
       console.log('error', data);
       // TODO dispatch ошибки
     };
+
+    dispatch(appActions.finishFetch());
   };
 };
 
 export const fetchStatuses = (): Thunk => {
   return async (dispatch) => {
+    dispatch(appActions.startFetch());
+
     const data = await StatusApi.fetchStatuses();
 
     if (!isError(data)) {
@@ -132,11 +156,15 @@ export const fetchStatuses = (): Thunk => {
       console.log('error', data);
       // TODO dispatch ошибки
     };
+
+    dispatch(appActions.finishFetch());
   };
 };
 
 export const fetchAllApprovedTask = (taskId?: number): Thunk => {
   return async (dispatch) => {
+    dispatch(appActions.startFetch());
+
     const data = await TaskApi.fetchAllApprovedTask();
 
     if (!isError(data)) {
@@ -148,11 +176,15 @@ export const fetchAllApprovedTask = (taskId?: number): Thunk => {
       console.log('error', data);
       // TODO dispatch ошибки
     };
+
+    dispatch(appActions.finishFetch());
   };
 };
 
 export const fetchAllRejectedTask = (taskId?: number): Thunk => {
   return async (dispatch) => {
+    dispatch(appActions.startFetch());
+
     const data = await TaskApi.fetchAllRejectedTask();
 
     if (!isError(data)) {
@@ -164,8 +196,10 @@ export const fetchAllRejectedTask = (taskId?: number): Thunk => {
       console.log('error', data);
       // TODO dispatch ошибки
     };
-  }
-}
 
-export type Actions = InferActions<typeof actions>;
+    dispatch(appActions.finishFetch());
+  };
+};
+
+export type Actions = InferActions<typeof actions | typeof appActions>;
 type Thunk = BaseThunk<Actions>

@@ -3,6 +3,7 @@ import { AxiosError } from 'axios';
 import { UserApi } from '../../api/api';
 import { InferActions, BaseThunk } from '../rootReducer';
 import { UserAttributes, NewUserAttributes } from './types';
+import { actions as appActions } from '../app/action';
 
 const isError = (res: any): res is AxiosError => {
   if ((res.isAxiosError !== undefined)) {
@@ -43,6 +44,8 @@ export const actions = {
 
 export const loginUser = (loginData: { username: string, password: string }): Thunk => {
   return async (dispatch) => {
+    dispatch(appActions.startFetch());
+
     const data = await UserApi.loginUser(loginData);
     
     if (!isError(data)) {
@@ -58,11 +61,15 @@ export const loginUser = (loginData: { username: string, password: string }): Th
         // TODO dispatch ошибки
       }
     };
+
+    dispatch(appActions.finishFetch());
   };
 };
 
 export const registerUser = (user: NewUserAttributes): Thunk => {
   return async (dispatch) => {
+    dispatch(appActions.startFetch());
+
     const data = await UserApi.registerUser(user);
 
     if (!isError(data)) {
@@ -83,30 +90,40 @@ export const registerUser = (user: NewUserAttributes): Thunk => {
         // TODO dispatch ошибки
       }
     };
+
+    dispatch(appActions.finishFetch());
   };
 };
 
 export const authUser = (): Thunk => {
   return async (dispatch) => {
+    dispatch(appActions.startFetch());
+
     const data = await UserApi.authUser();
 
     if (!isError(data)) {
       dispatch(actions.setUser(data));
       dispatch(actions.setIsAuth(true));
+      dispatch(appActions.setInitialized());
     } else {
       if (data.response?.status === 401) {
         dispatch(actions.setIsAuth(false));
         dispatch(actions.setUser(null));
+        dispatch(appActions.setInitialized());
       } else {
         console.log('error', data)
         // TODO dispatch ошибки
       }
     };
+
+    dispatch(appActions.finishFetch());
   };
 };
 
 export const fetchAllUsers = (): Thunk => {
   return async (dispatch) => {
+    dispatch(appActions.startFetch());
+
     const data = await UserApi.fetchAllUsers();
     
     if (!isError(data)) {
@@ -115,8 +132,10 @@ export const fetchAllUsers = (): Thunk => {
       console.log('error', data)
       // TODO dispatch ошибки
     };
-  }
-}
 
-export type Actions = InferActions<typeof actions>;
+    dispatch(appActions.finishFetch());
+  };
+};
+
+export type Actions = InferActions<typeof actions | typeof appActions>;
 type Thunk = BaseThunk<Actions>
